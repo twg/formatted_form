@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "bootstrap_builder"
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jack Neto", "The Working Group Inc."]
-  s.date = "2012-02-10"
+  s.date = "2012-02-13"
   s.description = ""
   s.email = "jack@twg.ca"
   s.extra_rdoc_files = [
@@ -17,12 +17,10 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
-    ".DS_Store",
     "LICENSE.txt",
     "README.md",
     "Rakefile",
     "VERSION",
-    "app/.DS_Store",
     "app/assets/images/glyphicons-halflings-white.png",
     "app/assets/images/glyphicons-halflings.png",
     "app/assets/javascripts/bootstrap.js",
@@ -35,14 +33,12 @@ Gem::Specification.new do |s|
     "app/views/bootstrap_builder/_submit.html.haml",
     "bootstrap_builder.gemspec",
     "lib/bootstrap_builder.rb",
-    "lib/bootstrap_builder/.DS_Store",
     "lib/bootstrap_builder/builder.rb",
     "lib/bootstrap_builder/configuration.rb",
     "lib/bootstrap_builder/engine.rb",
     "lib/bootstrap_builder/helper.rb",
     "lib/bootstrap_builder/railtie.rb",
-    "rails-bootstrap-builder.gemspec",
-    "vendor/.DS_Store"
+    "rails-bootstrap-builder.gemspec"
   ]
   s.homepage = "http://github.com/twg/bootstrap_builder"
   s.licenses = ["MIT"]
