@@ -149,6 +149,8 @@ module BootstrapBuilder
     def fields_for(record_or_name_or_array, *args, &block)
       options = args.extract_options!
       options[:builder] ||= BootstrapBuilder::Builder
+      options[:html] ||= {}
+      options[:html][:class] ||= self.options[:html] && self.options[:html][:class]
       super(record_or_name_or_array, *(args << options), &block)
     end
 

@@ -2,7 +2,7 @@
 
 A Rails form builder that generates [Twitter Bootstrap](http://twitter.github.com/bootstrap) markup and helps keep your code clean.
 
-* Includes Twiter Bootstrap 2.0 CSS and Javascript files
+* Includes Twiter Bootstrap 2.0.2 CSS and Javascript files
 * Uses existing Rails helpers
 * Auto-generates labels
 * Generates horizontal, vertical and inline forms
@@ -34,6 +34,17 @@ Require it in your Javascript manifest file if you want to use Bootstrap's jQuer
 ``` css
 //= require bootstrap
 ```
+
+## Configuration
+
+You can change the default configuration of this gem by adding the following code to you initializers:
+
+``` ruby
+BootstrapBuilder.configure do |conf|
+  conf.default_form_class = 'form-vertical' # Set the form class. Default is 'form-horizontal'
+end
+```
+
 ## Usage (with haml)
 
 Use `bootstrap_form_for` when you want to render a form with Bootstrap markup.
