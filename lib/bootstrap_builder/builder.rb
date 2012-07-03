@@ -10,20 +10,31 @@ module BootstrapBuilder
       number_field
       text_area 
       file_field 
-      datetime_select 
-      date_select 
-      time_zone_select
       range_field
       search_field
     ).each do |field_name|
       define_method field_name do |method, *args|
         options = args.detect { |a| a.is_a?(Hash) } || {}
-        render_field(field_name, method, options) { super(method, options) } 
+        html_options = collect_html_options(options)
+        render_field(field_name, method, options, html_options) { super(method, options) } 
+      end
+    end
+
+    %w{
+      datetime_select 
+      date_select 
+      time_select 
+      time_zone_select
+    }.each do |field_name|
+      define_method field_name do |method, options = {}, html_options = {}|
+        render_field('select', method, options, html_options) do
+          super(method, options, html_options)
+        end
       end
     end
 
     def select(method, choices, options = {}, html_options = {})
-      render_field('select', method, options) { super(method, choices, options, html_options) } 
+      render_field('select', method, options, html_options) { super(method, choices, options, html_options) } 
     end
 
     def hidden_field(method, options = {}, html_options = {})
@@ -122,11 +133,9 @@ module BootstrapBuilder
     def element(label = '&nbsp;', value = '', type = 'text_field', &block)
       value += @template.capture(&block) if block_given?
       %{
-        <div class='form_element #{type}'>
-          <div class='label'>
-            #{label}
-          </div>
-          <div class='value'>
+        <div class='control-group'>
+          <label class='control-label'>#{label}</label>
+          <div class='controls'>
             #{value}
           </div>
         </div>
@@ -158,7 +167,7 @@ module BootstrapBuilder
   protected
     
     # Main rendering method
-    def render_field(field_name, method, options={}, &block)
+    def render_field(field_name, method, options={}, html_options={}, &block)
       case field_name
       when 'check_box'
         template = field_name
@@ -166,14 +175,14 @@ module BootstrapBuilder
         template = 'default_field'
       end
       @template.render(:partial => "#{BootstrapBuilder.config.template_folder}/#{template}", :locals  => {
-        :builder => self,
-        :method => method,
-        :field => @template.capture(&block),
-        :label_text => label_text(method, options.delete(:label)),
-        :required => options.delete(:required),
-        :prepend => @template.raw(options.delete(:prepend)),
-        :append => @template.raw(options.delete(:append)),
-        :help_block => @template.raw(options.delete(:help_block)),
+        :builder        => self,
+        :method         => method,
+        :field          => @template.capture(&block),
+        :label_text     => label_text(method, html_options[:label]),
+        :required       => html_options[:required],
+        :prepend        => html_options[:prepend],
+        :append         => html_options[:append],
+        :help_block     => html_options[:help_block],
         :error_messages => error_messages_for(method)
       })
     end
@@ -182,5 +191,18 @@ module BootstrapBuilder
       text.nil? ? method.to_s.titleize.capitalize : @template.raw(text)
     end
     
+    def collect_html_options(options = {})
+      [
+        :prepend, 
+        :append, 
+        :label, 
+        :help_block,
+        :required
+      ].inject({}) do |h, attribute|
+        h[attribute] = @template.raw(options.delete(attribute))
+        h
+      end
+    end
+
   end
 end

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jack Neto", "The Working Group Inc."]
-  s.date = "2012-06-09"
+  s.date = "2012-07-03"
   s.description = ""
   s.email = "jack@twg.ca"
   s.extra_rdoc_files = [
@@ -37,8 +37,7 @@ Gem::Specification.new do |s|
     "lib/bootstrap_builder/configuration.rb",
     "lib/bootstrap_builder/engine.rb",
     "lib/bootstrap_builder/helper.rb",
-    "lib/bootstrap_builder/railtie.rb",
-    "rails-bootstrap-builder.gemspec"
+    "lib/bootstrap_builder/railtie.rb"
   ]
   s.homepage = "http://github.com/twg/bootstrap_builder"
   s.licenses = ["MIT"]
