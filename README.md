@@ -158,18 +158,15 @@ This will allow you to prevent double clicking by replacing the submit button wi
 
 ### So your Glyphicons aren't working?
 
-So `bootstrap.css` is referencing the grificon image file as 
+The problem is that `bootstrap.css` is referencing the glyphicon images in a folder that doe not exist in Rails 
 
 ```css
 background-image: url("../img/glyphicons-halflings.png");
 ```
-which is not so great for Rails.
 
-A possible way to fix is to override the original CSS file.
+To fix this just override the original CSS in a new file, and if you use [SASS](http://sass-lang.com) you'll get the added benefit of making proper use of the asset pipeline with the `image-url` method.
 
-Even better if you use [SASS](http://sass-lang.com) which has the added benefit of making proper use of the asset pipeline with the `image-url` method.
-
-bootstrap_override.scss
+Here's an example of `bootstrap_overides.scss` file:
 
 ```css
 [class^="icon-"],
@@ -180,6 +177,7 @@ bootstrap_override.scss
   background-image: image-url("glyphicons-halflings-white.png");
 }
 ```
+
 
 ---
 
