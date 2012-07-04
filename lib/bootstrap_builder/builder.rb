@@ -199,7 +199,7 @@ module BootstrapBuilder
         :help_block,
         :required
       ].inject({}) do |h, attribute|
-        h[attribute] = @template.raw(options.delete(attribute))
+        h[attribute] = @template.raw(options.delete(attribute)) if options[attribute]
         h
       end
     end
