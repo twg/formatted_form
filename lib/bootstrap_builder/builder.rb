@@ -42,6 +42,7 @@ module BootstrapBuilder
     end
 
     def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
+      html_options = collect_html_options(options)
       if options[:values].present?
         values = options.delete(:values).collect do |key, val|
           name = "#{object_name}[#{method}][]"
@@ -61,7 +62,7 @@ module BootstrapBuilder
           :error_messages => error_messages_for(method)
         })
       else
-        render_field('check_box', method, options) do
+        render_field('check_box', method, options, html_options) do
           super(method, options, checked_value, unchecked_value)
         end
       end

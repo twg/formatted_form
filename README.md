@@ -105,6 +105,13 @@ A group of checkboxes:
 = f.check_box :colours, :values => [['Red', 1], ['Green', 2], ['Blue', 3]]
 ```
 
+Use the :help_block option to show the label on the right side:
+
+``` ruby
+= f.check_box :approved, :help_block => 'Label on the Right'
+```
+
+
 ### Radio buttons
 
 A single radio button:
