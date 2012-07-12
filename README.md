@@ -25,14 +25,14 @@ Bundle it:
 Require it in your CSS manifest file: ('bootstrap-responsive' is optional)
 
 ``` css
-//= require bootstrap
-//= require bootstrap-responsive
+//= require bootstrap_builder/bootstrap
+//= require bootstrap_builder/bootstrap-responsive
 ```
 
 Require it in your Javascript manifest file if you want to use Bootstrap's jQuery plugins:
 
 ``` css
-//= require bootstrap
+//= require bootstrap_builder/bootstrap
 ```
 
 ## Configuration
