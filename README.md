@@ -2,7 +2,6 @@
 
 A Rails form builder that generates [Twitter Bootstrap](http://twitter.github.com/bootstrap) markup and helps keep your code clean.
 
-* Includes Twiter Bootstrap 2.0.4 CSS and Javascript files
 * Uses existing Rails helpers
 * Auto-generates labels
 * Generates horizontal, vertical and inline forms
