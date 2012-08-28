@@ -1,4 +1,4 @@
-class BootstrapBuilder::Builder < ActionView::Helpers::FormBuilder
+class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
     
   %w(
     text_field 
