@@ -152,29 +152,6 @@ This will allow you to prevent double clicking by replacing the submit button wi
 = f.submit 'Log In', :change_to_text => 'Saving ...'
 ```
 
-### So your Glyphicons aren't working?
-
-The problem is that `bootstrap.css` is referencing the glyphicon images in a folder that doesn't exist in Rails .
-
-```css
-background-image: url("../img/glyphicons-halflings.png");
-```
-
-To fix this just override the original CSS in a new file and point it to the right folder.
-
-If you use [SASS](http://sass-lang.com) you'll get the added benefit of making proper use of the asset pipeline with the `image-url` method. Here's an example of how a `bootstrap_overides.scss` file might look like:
-
-```css
-[class^="icon-"],
-[class*=" icon-"] {
-  background-image: image-url("glyphicons-halflings.png");
-}
-.icon-white {
-  background-image: image-url("glyphicons-halflings-white.png");
-}
-```
-
-
 ---
 
 Copyright 2012 Jack Neto, [The Working Group, Inc](http://www.theworkinggroup.ca)
