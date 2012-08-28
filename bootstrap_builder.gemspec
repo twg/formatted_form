@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "app/assets/javascripts/bootstrap_builder.js",
+    "app/assets/stylesheets/bootstrap_builder.css",
     "app/views/bootstrap_builder/_check_box.html.haml",
     "app/views/bootstrap_builder/_default_field.html.haml",
     "app/views/bootstrap_builder/_radio_button.html.haml",
@@ -31,7 +32,6 @@ Gem::Specification.new do |s|
     "lib/bootstrap_builder/configuration.rb",
     "lib/bootstrap_builder/engine.rb",
     "lib/bootstrap_builder/form_builder.rb",
-    "lib/bootstrap_builder/railtie.rb",
     "lib/bootstrap_builder/view_helper.rb"
   ]
   s.homepage = "http://github.com/twg/bootstrap_builder"
@@ -44,9 +44,15 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<rails>, [">= 3.1.0"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
     else
+      s.add_dependency(%q<rails>, [">= 3.1.0"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
     end
   else
+    s.add_dependency(%q<rails>, [">= 3.1.0"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
   end
 end
 
