@@ -12,27 +12,16 @@ A Rails form builder that generates [Twitter Bootstrap](http://twitter.github.co
 
 ## Installation
 
-Add gem definition to your Gemfile:
+Add gem definition to your Gemfile and run `bundle install`:
     
 ``` ruby
 gem 'bootstrap_builder'
 ```
-    
-Bundle it:
-    
-    bundle install
 
-Require it in your CSS manifest file: ('bootstrap-responsive' is optional)
+Require it in your CSS and JS manifest files:
 
 ``` css
-//= require bootstrap_builder/bootstrap
-//= require bootstrap_builder/bootstrap-responsive
-```
-
-Require it in your Javascript manifest file if you want to use Bootstrap's jQuery plugins:
-
-``` css
-//= require bootstrap_builder/bootstrap
+//= require bootstrap_builder
 ```
 
 ## Configuration
