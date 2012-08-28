@@ -1,11 +1,13 @@
 // Reset the state of the submit button
 $(document).ready(function() {
-  $('input[type=submit].btn.change_to_text').show();
-  $('.submit_text').hide();
+  
+  $('input[type=submit][data-onsubmit-value]').each(function(i, button){
+    $(button).val($(button).data('offsubmit-value')).removeClass('disabled');
+  });
+  
+  $('form').on('submit', function(event){
+    var button = $('input[type=submit][data-onsubmit-value]', event.target);
+    button.val(button.data('onsubmit-value')).addClass('disabled');
+  });
+  
 });
-
-// Shows the submit button replacement text on click
-$('input[type=submit].btn.change_to_text input[type=submit]').live('click', function(){
-  $(this).parent().next().show();
-  $(this).parent().hide();
-})

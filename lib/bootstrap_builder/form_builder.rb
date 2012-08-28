@@ -102,33 +102,29 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
       :error_messages => error_messages_for(method)
     })
   end
-
-  # f.submit 'Log In', :change_to_text => 'Logging you in ...'
+  
+  # Creates submit button element with appropriate bootstrap classes.
+  # If `onsubmit_value` option is passed button will be disabled to prevent
+  # multiple form submissions. Example:
+  #   form.submit 'Create User', :onsubmit_value => 'Creating...'
   def submit(value, options={}, &block)
-    after_text = @template.capture(&block) if block_given?
-    
     # Add specific bootstrap class
-    options[:class] ||= ''
-    options[:class] += ' btn'
-    unless options[:class] =~ /btn-/
-      options[:class] += ' btn-primary' 
-    end
+    options[:class] = "#{options[:class]} btn"
+    options[:class] = "#{options[:class]} btn-primary" unless options[:class] =~ /btn-/
 
-    # Set the script to change the text
-    if change_to_text = options.delete(:change_to_text)
-      options[:class] += ' change_to_text'
-      options[:onclick] ||= ''
-      options[:onclick] = "$(this).closest('.submit').hide();$(this).closest('.submit').after($('<div class=submit>#{change_to_text}</div>'))"
+    # Button can be set to be disabled when form is submitted
+    if onsubmit_value = options.delete(:onsubmit_value)
+      options[:data] ||= { }
+      options[:data][:onsubmit_value]  = onsubmit_value
+      options[:data][:offsubmit_value] = value
     end
 
     @template.render(:partial => "#{BootstrapBuilder.config.template_folder}/submit", :locals  => {
-      :builder => self,
-      :field => super(value, options),
-      :after_text => after_text,
-      :change_to_text => change_to_text
+      :builder    => self,
+      :field      => super(value, options)
     })
   end
-
+  
   # generic container for all things form
   def element(label = '&nbsp;', value = '', type = 'text_field', &block)
     value += @template.capture(&block) if block_given?
