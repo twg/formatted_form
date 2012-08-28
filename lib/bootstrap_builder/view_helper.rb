@@ -1,4 +1,4 @@
-module BootstrapBuilder::Helper
+module BootstrapBuilder::ViewHelper
   
   def bootstrap_form_for(record, options = {}, &proc)
     options = options.dup
