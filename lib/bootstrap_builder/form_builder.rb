@@ -129,17 +129,19 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
     })
   end
   
-  # generic container for all things form
-  def element(label = '&nbsp;', value = '', type = 'text_field', &block)
-    value += @template.capture(&block) if block_given?
-    %{
-      <div class='control-group'>
-        <label class='control-label'>#{label}</label>
-        <div class='controls'>
-          #{value}
-        </div>
-      </div>
-    }.html_safe
+  # Rorm helper to render generic content as a form field. For example:
+  #   form.element 'Label', 'Content'
+  #   form.element 'Label do
+  #     Content
+  #   end
+  def element(label = '&nbsp;', value = '', &block)
+    value = @template.capture(&block) if block_given?
+    
+    @template.render(:partial => "#{BootstrapBuilder.config.template_folder}/element", :locals => {
+      :builder  => self,
+      :label    => label,
+      :value    => value
+    })
   end
 
   def error_messages

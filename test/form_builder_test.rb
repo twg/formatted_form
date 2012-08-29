@@ -3,9 +3,39 @@ require 'test_helper'
 # `raise output_buffer.inspect` if you want to peek inside generated html
 class FormBuilderTest < ActionView::TestCase
   
+  # -- Form -----------------------------------------------------------------
+  def test_form
+    flunk 'todo'
+  end
   
+  # -- Text Field -----------------------------------------------------------
   def test_text_field
     flunk 'todo'
+  end
+  
+  # -------------------------------------------------------------------------
+  def test_eveything_else
+    # each helper should have it's own partial to override
+    flunk 'todo'
+  end
+  
+  # -- Element --------------------------------------------------------------
+  def test_element
+    with_element 'Label', 'Content'
+    assert_select 'div[class="control-group"]' do
+      assert_select 'label[class="control-label"]', 'Label'
+      assert_select 'div[class="controls"]', 'Content'
+    end
+  end
+  
+  def test_element_with_block
+    with_element 'Label' do
+      'Content'
+    end
+    assert_select 'div[class="control-group"]' do
+      assert_select 'label[class="control-label"]', 'Label'
+      assert_select 'div[class="controls"]', 'Content'
+    end
   end
   
   # -- Submit ---------------------------------------------------------------

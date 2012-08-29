@@ -16,8 +16,12 @@ class ActionView::TestCase
     concat bootstrap_form_for(*args, &block)
   end
   
-  def with_submit(*args)
-    with_bootstrap_form_for(:user, :url => ''){ |f| f.submit *args }
+  # Helper method to handle things like `with_text_field`, `with_submit`, etc
+  def method_missing(method_name, *args, &block)
+    if method_name =~ /^with_(\w+)/
+      with_bootstrap_form_for(:user, :url => ''){ |f| f.send($1, *args, &block) }
+    else
+      super(method_name, *args, &block)
+    end
   end
-  
 end
