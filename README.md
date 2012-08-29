@@ -114,7 +114,7 @@ A group of radio buttons:
 = f.radio_button :role, [['Admin', 1], ['Manager', 2], ['Editor', 3]]
 ```
 
-## Submit
+### Submit
 If you add 'bootstrap_builder' to your Javascript manifest you'll be able to add an extra `:onsubmit_value` option to submit buttons. This will prevent accidental multiple form submits.
 
 ``` ruby

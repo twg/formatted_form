@@ -106,22 +106,26 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
   # Creates submit button element with appropriate bootstrap classes.
   # If `onsubmit_value` option is passed button will be disabled to prevent
   # multiple form submissions. Example:
+  #   form.submit, :class => 'btn-danger'
   #   form.submit 'Create User', :onsubmit_value => 'Creating...'
-  def submit(value, options={}, &block)
+  def submit(value = nil, options = {}, &block)
+    value, options = nil, value if value.is_a?(Hash)
+    value ||= submit_default_value
+    
     # Add specific bootstrap class
-    options[:class] = "#{options[:class]} btn"
+    options[:class] = "#{options[:class]} btn".strip
     options[:class] = "#{options[:class]} btn-primary" unless options[:class] =~ /btn-/
-
+    
     # Button can be set to be disabled when form is submitted
     if onsubmit_value = options.delete(:onsubmit_value)
       options[:data] ||= { }
       options[:data][:onsubmit_value]  = onsubmit_value
       options[:data][:offsubmit_value] = value
     end
-
+    
     @template.render(:partial => "#{BootstrapBuilder.config.template_folder}/submit", :locals  => {
-      :builder    => self,
-      :field      => super(value, options)
+      :builder  => self,
+      :field    => super(value, options)
     })
   end
   
