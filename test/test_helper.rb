@@ -14,7 +14,7 @@ class User
   include ActiveModel::Validations
   include ActiveModel::Conversion
   
-  attr_accessor :id, :name, :twitter, :role
+  attr_accessor :id, :name, :twitter, :role, :colors
   
   validates :name, :presence => true
   

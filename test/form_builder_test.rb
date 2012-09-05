@@ -113,6 +113,59 @@ class FormBuilderTest < ActionView::TestCase
     end
   end
   
+  # -- Check Boxes ----------------------------------------------------------
+  def test_check_box
+    with_check_box :colors, {}, 'yes', 'no'
+    assert_select "div[class='control-group']" do
+      assert_select "div[class='control-label']", 'Colors'
+      assert_select "div[class='controls']" do
+        assert_select "label[class='checkbox']" do
+          assert_select "input[type='hidden'][name='user[colors]'][value='no']"
+          assert_select "input[type='checkbox'][id='user_colors'][name='user[colors]'][value='yes']"
+        end
+      end
+    end
+  end
+  
+  def test_check_box_custom_label
+    with_check_box :colors, :label => 'Kolors'
+    assert_select "div[class='control-label']", 'Kolors'
+  end
+  
+  def test_check_box_with_choices_array
+    with_check_box :colors, {}, ['red', 'green']
+    assert_select "div[class='control-group']" do
+      assert_select "div[class='control-label']", 'Colors'
+      assert_select "div[class='controls']" do
+        assert_select "label[class='checkbox']", 'red' do
+          assert_select "input[type='checkbox'][id='user_colors_red'][name='user[colors][]'][value='red']"
+        end
+        assert_select "label[class='checkbox']", 'green' do
+          assert_select "input[type='checkbox'][id='user_colors_green'][name='user[colors][]'][value='green']"
+        end
+      end
+    end
+  end
+  
+  def test_check_box_with_choices_and_labels
+    with_check_box :colors, {}, [['Red', 'r'], ['Green', 'g']]
+    assert_select "div[class='controls']" do
+      assert_select "label[class='checkbox']", 'Red' do
+        assert_select "input[type='checkbox'][id='user_colors_r'][name='user[colors][]'][value='r']"
+      end
+      assert_select "label[class='checkbox']", 'Green' do
+        assert_select "input[type='checkbox'][id='user_colors_g'][name='user[colors][]'][value='g']"
+      end
+    end
+  end
+  
+  def test_check_box_inline
+    with_check_box :colors, :class => 'inline'
+    assert_select "label[class='checkbox inline']" do
+      assert_select "input[type='checkbox'][id='user_colors'][name='user[colors]']"
+    end
+  end
+  
   # -- Element --------------------------------------------------------------
   def test_element
     with_element 'Label', 'Content'

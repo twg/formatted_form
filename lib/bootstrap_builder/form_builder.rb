@@ -32,42 +32,40 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
       end
     end
   end
+  
+  def hidden_field(*args)
+    raise 'hey'
+  end
 
   def select(method, choices, options = {}, html_options = {})
     render_field('select', method, options) { super(method, choices, options) } 
   end
-
+  
+  # Same as the old check box but it's possible to send an array of values
+  #   form.check_box :color
+  #   form.check_box :color, {}, 'white'
+  #   form.check_box :color, {}, ['red', 'blue']
+  #   form.check_box :color, {}, [['Red', 'red'], ['Blue', 'blue']]
   def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
-    html_options = collect_html_options(options)
-    if options[:values].present?
-      values = options.delete(:values).collect do |key, val|
-        name = "#{object_name}[#{method}][]"
-        id = "#{object_name}_#{method}_#{val.to_s.gsub(' ', '_').underscore}"
-        {
-          :field => super(method, options.merge({:name => name, :id => id}), val, nil),
-          :label_text => key,
-          :id => id
-        }
-      end
-      @template.render(:partial => "#{BootstrapBuilder.config.template_folder}/check_box", :locals  => {
-        :builder => self,
-        :method => method,
-        :values => values,
-        :label_text => label_text(method, options.delete(:label)),
-        :help_block => @template.raw(options.delete(:help_block)),
-        :error_messages => error_messages_for(method)
-      })
-    else
-      render_field('check_box', method, options, html_options) do
-        super(method, options, checked_value, unchecked_value)
+    is_array = checked_value.is_a?(Array)
+    options.merge!(:multiple => true) if is_array
+    checked_value = is_array ? checked_value : [[checked_value, checked_value, unchecked_value]]
+    choices = checked_value.collect do |label, checked, unchecked|
+      label, checked  = label, label  if !checked && is_array
+      checked         = label         if !checked
+      label           = nil           if !is_array
+      inline = (options[:class].to_s =~ /inline/) ? ' inline' : nil
+      @template.content_tag(:label, :class => "checkbox#{inline}") do
+        super(method, options, checked, unchecked) + label
       end
     end
+    default_field(:check_box, method, options.merge(:choices => choices))
   end
   
   # Radio button helper. Optionally it's possible to specify multiple choices at once:
+  #   form.radio_button :role, 'admin'
   #   form.radio_button :role, ['admin', 'regular']
   #   form.radio_button :role, [['Admin', 1], ['Regular', 0]]
-  # Outputs an arary of tuples as a :choices option into a partial
   def radio_button(method, tag_value, options = {})
     tag_values = tag_value.is_a?(Array) ? tag_value : [tag_value]
     choices = tag_values.collect do |label, choice|
