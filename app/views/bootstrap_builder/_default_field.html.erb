@@ -1,0 +1,22 @@
+<%
+  control_group_class  = 'control-group'
+  control_group_class << ' error' if options[:errors]
+  
+  controls_class  = 'controls'
+  controls_class << ' input-prepend'  if options[:prepend]
+  controls_class << ' input-append'   if options[:append]
+%>
+
+<%= content_tag(:div, :class => control_group_class) do %>
+  
+  <%= options[:builder].label(options[:method], options[:label], :class => 'control-label') %>
+  
+  <%= content_tag(:div, :class => controls_class) do %>
+    <%= content_tag(:span, options[:prepend], :class => 'add-on') if options[:prepend] %>
+    <%= options[:content] %>
+    <%= content_tag(:span, options[:append], :class => 'add-on') if options[:append] %>
+    <%= content_tag(:span, options[:errors], :class => 'help-inline') if options[:errors] %>
+    <%= content_tag(:span, options[:help_block], :class => 'help-block') if options[:help_block] %>
+  <% end %>
+  
+<% end %>

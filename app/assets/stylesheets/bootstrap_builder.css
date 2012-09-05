@@ -1,7 +1,0 @@
-/* -- Fix for bootstrap to work with asset pipeline ---------------------- */
-[class^="icon-"], [class*=" icon-"] {
-  background-image: image-url("glyphicons-halflings.png");
-}
-.icon-white {
-  background-image: image-url("glyphicons-halflings-white.png");
-}

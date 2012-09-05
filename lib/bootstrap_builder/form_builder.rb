@@ -14,8 +14,9 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
   ).each do |field_name|
     define_method field_name do |method, *args|
       options = args.detect { |a| a.is_a?(Hash) } || {}
-      html_options = collect_html_options(options)
-      render_field(field_name, method, options, html_options) { super(method, options) } 
+      default_field(field_name, method, options) do 
+        super(method, options)
+      end
     end
   end
 
@@ -26,18 +27,14 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
     time_zone_select
   }.each do |field_name|
     define_method field_name do |method, options = {}, html_options = {}|
-      render_field('select', method, options, html_options) do
-        super(method, options, html_options)
+      default_field('select', method, options) do
+        super(method, options)
       end
     end
   end
 
   def select(method, choices, options = {}, html_options = {})
-    render_field('select', method, options, html_options) { super(method, choices, options, html_options) } 
-  end
-
-  def hidden_field(method, options = {}, html_options = {})
-    super(method, options)
+    render_field('select', method, options) { super(method, choices, options) } 
   end
 
   def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
@@ -66,48 +63,25 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
       end
     end
   end
-
+  
+  # Radio button helper. Optionally it's possible to specify multiple choices at once:
+  #   form.radio_button :role, ['admin', 'regular']
+  #   form.radio_button :role, [['Admin', 1], ['Regular', 0]]
+  # Outputs an arary of tuples as a :choices option into a partial
   def radio_button(method, tag_value, options = {})
-    case tag_value
-      when Array
-        choices = tag_value.collect do |choice|
-          if !choice.is_a?(Array)
-            choice = [choice, choice]
-          elsif choice.length == 1
-            choice << choice[0]
-          end
-          {
-            :field => super(method, choice[1], options),
-            :label => choice[0],
-            :id => "#{object_name}_#{method}_#{choice[1].to_s.gsub(' ', '_').underscore}"
-          }
-        end
-      else
-        choices = [{
-          :field => super(method, tag_value),
-          :label => tag_value,
-          :label_for => "#{object_name}_#{method}_#{tag_value.to_s.gsub(' ', '_').underscore}"
-        }]
+    tag_values = tag_value.is_a?(Array) ? tag_value : [tag_value]
+    choices = tag_values.collect do |label, choice|
+      label, choice = label, label if !choice
+      inline = (options[:class].to_s =~ /inline/) ? ' inline' : nil
+      @template.content_tag(:label, :class => "radio#{inline}") do
+        super(method, choice, options) + label
+      end
     end
-    
-    @template.render(:partial => "#{BootstrapBuilder.config.template_folder}/radio_button", :locals  => {
-      :builder => self,
-      :method => method,
-      :label_text => label_text(method, options.delete(:label)),
-      :choices => choices,
-      :required => options.delete(:required),
-      :before_text => @template.raw(options.delete(:before_text)),
-      :after_text => @template.raw(options.delete(:after_text)),
-      :help_block => @template.raw(options.delete(:help_block)),
-      :error_messages => error_messages_for(method)
-    })
+    default_field(:radio_button, method, options.merge(:choices => choices))
   end
   
   # Creates submit button element with appropriate bootstrap classes.
-  # If `onsubmit_value` option is passed button will be disabled to prevent
-  # multiple form submissions. Example:
   #   form.submit, :class => 'btn-danger'
-  #   form.submit 'Create User', :onsubmit_value => 'Creating...'
   def submit(value = nil, options = {}, &block)
     value, options = nil, value if value.is_a?(Hash)
     value ||= submit_default_value
@@ -116,93 +90,52 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
     options[:class] = "#{options[:class]} btn".strip
     options[:class] = "#{options[:class]} btn-primary" unless options[:class] =~ /btn-/
     
-    # Button can be set to be disabled when form is submitted
-    if onsubmit_value = options.delete(:onsubmit_value)
-      options[:data] ||= { }
-      options[:data][:onsubmit_value]  = onsubmit_value
-      options[:data][:offsubmit_value] = value
+    default_field(:submit, nil, options) do
+      super(value, options)
     end
-    
-    @template.render(:partial => "#{BootstrapBuilder.config.template_folder}/submit", :locals  => {
-      :builder  => self,
-      :field    => super(value, options)
-    })
   end
   
-  # Rorm helper to render generic content as a form field. For example:
+  # Form helper to render generic content as a form field. For example:
   #   form.element 'Label', 'Content'
   #   form.element 'Label do
   #     Content
   #   end
-  def element(label = '&nbsp;', value = '', &block)
-    value = @template.capture(&block) if block_given?
-    
-    @template.render(:partial => "#{BootstrapBuilder.config.template_folder}/element", :locals => {
-      :builder  => self,
-      :label    => label,
-      :value    => value
-    })
+  def element(label = nil, value = nil, &block)
+    options = {:label => label, :content => value }
+    default_field(:element, nil, options, &block)
   end
-
-  def error_messages
-    if object && !object.errors.empty?
-      message = object.errors[:base].present? ? object.errors[:base]: 'There were some problems submitting this form. Please correct all the highlighted fields and try again'
-      @template.content_tag(:div, message, :class => 'form_error')
-    end
-  end
-
-  def error_messages_for(method)
-    if (object and object.respond_to?(:errors) and errors = object.errors[method] and !errors.empty?)
-      errors.is_a?(Array) ? errors.first : errors
-    end
-  end
-
-  def fields_for(record_or_name_or_array, *args, &block)
-    options = args.extract_options!
+  
+  # adding builder class for fields_for
+  def fields_for(record_name, record_object = nil, options ={}, &block)
     options[:builder] ||= BootstrapBuilder::FormBuilder
-    options[:html] ||= {}
-    options[:html][:class] ||= self.options[:html] && self.options[:html][:class]
-    super(record_or_name_or_array, *(args << options), &block)
+    super(record_name, record_object, options, &block)
   end
-
   
 protected
   
   # Main rendering method
-  def render_field(field_name, method, options={}, html_options={}, &block)
-    case field_name
-    when 'check_box'
-      template = field_name
-    else
-      template = 'default_field'
-    end
-    @template.render(:partial => "#{BootstrapBuilder.config.template_folder}/#{template}", :locals  => {
-      :builder        => self,
-      :method         => method,
-      :field          => @template.capture(&block),
-      :label_text     => label_text(method, html_options[:label]),
-      :required       => html_options[:required],
-      :prepend        => html_options[:prepend],
-      :append         => html_options[:append],
-      :help_block     => html_options[:help_block],
-      :error_messages => error_messages_for(method)
-    })
-  end
-
-  def label_text(method, text = nil)
-    text.nil? ? method.to_s.titleize.capitalize : @template.raw(text)
+  def default_field(field_name, method, options = {}, &block)
+    builder_options = builder_options!(options)
+    @template.render(
+      :partial => "#{BootstrapBuilder.config.template_folder}/#{field_name}",
+      :locals  => { :options => builder_options.merge(
+        :builder  => self,
+        :method   => method,
+        :content  => block_given?? @template.capture(&block) : options.delete(:content),
+        :errors   => method ? error_messages_for(method) : nil
+      )}
+    )
   end
   
-  def collect_html_options(options = {})
-    [
-      :prepend, 
-      :append, 
-      :label, 
-      :help_block,
-      :required
-    ].inject({}) do |h, attribute|
-      h[attribute] = @template.raw(options.delete(attribute)) if options[attribute]
-      h
+  # Extacts parameters that are used for rendering the field
+  def builder_options!(options = {})
+    [:label, :prepend, :append, :help_block, :choices].each_with_object({}) do |attr, hash|
+      hash[attr] = options.delete(attr)
     end
+  end
+  
+  # Collecting errors for a field and outputting first instance
+  def error_messages_for(method)
+    [object.errors[method]].flatten.first if object && object.respond_to?(:errors)
   end
 end
