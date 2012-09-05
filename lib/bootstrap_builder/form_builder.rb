@@ -5,7 +5,6 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
     password_field 
     email_field
     telephone_field
-    phone_field
     number_field
     text_area 
     file_field 
@@ -15,7 +14,7 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
     define_method field_name do |method, *args|
       options = args.detect { |a| a.is_a?(Hash) } || {}
       default_field(field_name, method, options) do 
-        super(method, options)
+        super(method, *args)
       end
     end
   end

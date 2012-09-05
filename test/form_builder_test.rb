@@ -201,4 +201,61 @@ class FormBuilderTest < ActionView::TestCase
     assert_select "input[name=commit][class='btn-danger btn']"
   end
   
+  # -- Others ---------------------------------------------------------------
+  def test_password_field
+    with_password_field :name
+    assert_select "div[class='controls']" do
+      assert_select "input[type='password'][id='user_name'][name='user[name]']"
+    end
+  end
+  
+  def test_email_field
+    with_email_field :name
+    assert_select "div[class='controls']" do
+      assert_select "input[type='email'][id='user_name'][name='user[name]']"
+    end
+  end
+  
+  def test_telephone_field
+    with_telephone_field :name
+    assert_select "div[class='controls']" do
+      assert_select "input[type='tel'][id='user_name'][name='user[name]']"
+    end
+  end
+  
+  def test_number_field
+    with_number_field :name
+    assert_select "div[class='controls']" do
+      assert_select "input[type='number'][id='user_name'][name='user[name]']"
+    end
+  end
+  
+  def test_text_area
+    with_text_area :name
+    assert_select "div[class='controls']" do
+      assert_select "textarea[id='user_name'][name='user[name]']"
+    end
+  end
+  
+  def test_file_field
+    with_file_field :name
+    assert_select "div[class='controls']" do
+      assert_select "input[type='file'][id='user_name'][name='user[name]']"
+    end
+  end
+  
+  def test_range_field
+    with_range_field :name
+    assert_select "div[class='controls']" do
+      assert_select "input[type='range'][id='user_name'][name='user[name]']"
+    end
+  end
+  
+  def test_search_field
+    with_search_field :name
+    assert_select "div[class='controls']" do
+      assert_select "input[type='search'][id='user_name'][name='user[name]']"
+    end
+  end
+  
 end
