@@ -23,7 +23,7 @@ class FormBuilderTest < ActionView::TestCase
   def test_text_field
     with_text_field :name
     
-    assert_select "div[class='control-group']" do
+    assert_select "div[class='control-group cg-name']" do
       assert_select "label[for='user_name']", 'Name'
       assert_select "div[class='controls']" do
         assert_select "input[type='text'][id='user_name'][name='user[name]']"
@@ -33,12 +33,13 @@ class FormBuilderTest < ActionView::TestCase
   
   def test_text_field_prepend_append
     with_text_field :twitter, :prepend => '@', :append => '!'
-    
-    assert_select "div[class='control-group']" do
+    assert_select "div[class='control-group cg-twitter']" do
       assert_select "label[for='user_twitter']", 'Twitter'
-      assert_select "div[class='controls input-prepend input-append']" do
-        assert_select "span[class='add-on']", '@'
-        assert_select "input[type='text'][id='user_twitter'][name='user[twitter]']"
+      assert_select "div[class='controls']" do
+        assert_select "div[class='input-prepend input-append']" do
+          assert_select "span[class='add-on']", '@'
+          assert_select "input[type='text'][id='user_twitter'][name='user[twitter]']"
+        end
         assert_select "span[class='add-on']", '!'
       end
     end
@@ -46,7 +47,7 @@ class FormBuilderTest < ActionView::TestCase
   
   def test_text_field_with_help_block
     with_text_field :name, :help_block => 'Help'
-    assert_select "div[class='control-group']" do
+    assert_select "div[class='control-group cg-name']" do
       assert_select "div[class='controls']" do
         assert_select "input[type='text'][id='user_name'][name='user[name]']"
         assert_select "span[class='help-block']", 'Help'
@@ -58,7 +59,7 @@ class FormBuilderTest < ActionView::TestCase
     assert @user.invalid?
     with_text_field :name
     
-    assert_select "div[class='control-group error']" do
+    assert_select "div[class='control-group cg-name error']" do
       assert_select "div[class='controls']" do
         assert_select "input[type='text'][id='user_name'][name='user[name]']"
         assert_select "span[class='help-inline']", "can&#x27;t be blank"
@@ -69,7 +70,7 @@ class FormBuilderTest < ActionView::TestCase
   # -- Radio Button ---------------------------------------------------------
   def test_radio_button
     with_radio_button :role, 'admin'
-    assert_select "div[class='control-group']" do
+    assert_select "div[class='control-group cg-role']" do
       assert_select "div[class='control-label']", 'Role'
       assert_select "div[class='controls']" do
         assert_select "label[class='radio']", 'admin' do
@@ -116,7 +117,7 @@ class FormBuilderTest < ActionView::TestCase
   # -- Check Boxes ----------------------------------------------------------
   def test_check_box
     with_check_box :colors, {}, 'yes', 'no'
-    assert_select "div[class='control-group']" do
+    assert_select "div[class='control-group cg-colors']" do
       assert_select "div[class='control-label']", 'Colors'
       assert_select "div[class='controls']" do
         assert_select "label[class='checkbox']" do
@@ -134,15 +135,12 @@ class FormBuilderTest < ActionView::TestCase
   
   def test_check_box_with_choices_array
     with_check_box :colors, {}, ['red', 'green']
-    assert_select "div[class='control-group']" do
-      assert_select "div[class='control-label']", 'Colors'
-      assert_select "div[class='controls']" do
-        assert_select "label[class='checkbox']", 'red' do
-          assert_select "input[type='checkbox'][id='user_colors_red'][name='user[colors][]'][value='red']"
-        end
-        assert_select "label[class='checkbox']", 'green' do
-          assert_select "input[type='checkbox'][id='user_colors_green'][name='user[colors][]'][value='green']"
-        end
+    assert_select "div[class='controls']" do
+      assert_select "label[class='checkbox']", 'red' do
+        assert_select "input[type='checkbox'][id='user_colors_red'][name='user[colors][]'][value='red']"
+      end
+      assert_select "label[class='checkbox']", 'green' do
+        assert_select "input[type='checkbox'][id='user_colors_green'][name='user[colors][]'][value='green']"
       end
     end
   end
