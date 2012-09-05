@@ -13,16 +13,17 @@ Gem::Specification.new do |s|
   s.description = ""
   s.email = "jack@twg.ca"
   s.extra_rdoc_files = [
-    "LICENSE.txt",
+    "LICENSE",
     "README.md"
   ]
   s.files = [
     "Gemfile",
-    "Gemfile.lock",
-    "LICENSE.txt",
+    "LICENSE",
     "README.md",
     "Rakefile",
     "VERSION",
+    "app/assets/javascripts/bootstrap_builder.js",
+    "app/assets/stylesheets/bootstrap_builder.css",
     "app/views/bootstrap_builder/_check_box.html.erb",
     "app/views/bootstrap_builder/_element.html.erb",
     "app/views/bootstrap_builder/_email_field.html.erb",
@@ -73,7 +74,6 @@ Gem::Specification.new do |s|
     "test/dummy/config/routes.rb",
     "test/dummy/lib/assets/.gitkeep",
     "test/dummy/log/.gitkeep",
-    "test/dummy/log/test.log",
     "test/dummy/public/404.html",
     "test/dummy/public/422.html",
     "test/dummy/public/500.html",
