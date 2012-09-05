@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jack Neto", "The Working Group Inc."]
-  s.date = "2012-08-29"
+  s.date = "2012-09-05"
   s.description = ""
   s.email = "jack@twg.ca"
   s.extra_rdoc_files = [
@@ -23,19 +23,30 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
-    "app/assets/javascripts/bootstrap_builder.js",
-    "app/assets/stylesheets/bootstrap_builder.css",
-    "app/views/bootstrap_builder/_check_box.html.haml",
-    "app/views/bootstrap_builder/_default_field.html.haml",
+    "app/views/bootstrap_builder/_check_box.html.erb",
     "app/views/bootstrap_builder/_element.html.erb",
-    "app/views/bootstrap_builder/_radio_button.html.haml",
+    "app/views/bootstrap_builder/_email_field.html.erb",
+    "app/views/bootstrap_builder/_file_field.html.erb",
+    "app/views/bootstrap_builder/_number_field.html.erb",
+    "app/views/bootstrap_builder/_password_field.html.erb",
+    "app/views/bootstrap_builder/_phone_field.html.erb",
+    "app/views/bootstrap_builder/_radio_button.html.erb",
+    "app/views/bootstrap_builder/_range_field.html.erb",
+    "app/views/bootstrap_builder/_search_field.html.erb",
+    "app/views/bootstrap_builder/_select.html.erb",
     "app/views/bootstrap_builder/_submit.html.erb",
+    "app/views/bootstrap_builder/_telephone_field.html.erb",
+    "app/views/bootstrap_builder/_text_area.html.erb",
+    "app/views/bootstrap_builder/_text_field.html.erb",
+    "app/views/bootstrap_builder/templates/_choices.html.erb",
+    "app/views/bootstrap_builder/templates/_field.html.erb",
     "bootstrap_builder.gemspec",
     "lib/bootstrap_builder.rb",
     "lib/bootstrap_builder/configuration.rb",
     "lib/bootstrap_builder/engine.rb",
     "lib/bootstrap_builder/form_builder.rb",
     "lib/bootstrap_builder/view_helper.rb",
+    "test/bootstrap_builder_test.rb",
     "test/dummy/README.rdoc",
     "test/dummy/Rakefile",
     "test/dummy/app/assets/javascripts/application.js",
