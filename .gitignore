@@ -3,3 +3,4 @@
 .rvmrc
 pkg
 /test/dummy/log/*.log
+Gemfile.lock
