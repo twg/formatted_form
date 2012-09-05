@@ -202,6 +202,15 @@ class FormBuilderTest < ActionView::TestCase
   end
   
   # -- Others ---------------------------------------------------------------
+  def test_select_field
+    with_select :name, ['Bob']
+    assert_select "div[class='controls']" do
+      assert_select "select[id='user_name'][name='user[name]']" do
+        assert_select "option[value='Bob']", 'Bob'
+      end
+    end
+  end
+  
   def test_password_field
     with_password_field :name
     assert_select "div[class='controls']" do
@@ -255,6 +264,44 @@ class FormBuilderTest < ActionView::TestCase
     with_search_field :name
     assert_select "div[class='controls']" do
       assert_select "input[type='search'][id='user_name'][name='user[name]']"
+    end
+  end
+  
+  def test_datetime_select
+    with_datetime_select :timestamp
+    assert_select "div[class='controls']" do
+      assert_select "select[id='user_timestamp_1i'][name='user[timestamp(1i)]']"
+      assert_select "select[id='user_timestamp_2i'][name='user[timestamp(2i)]']"
+      assert_select "select[id='user_timestamp_3i'][name='user[timestamp(3i)]']"
+      assert_select "select[id='user_timestamp_4i'][name='user[timestamp(4i)]']"
+      assert_select "select[id='user_timestamp_5i'][name='user[timestamp(5i)]']"
+    end
+  end
+  
+  def test_date_select
+    with_date_select :timestamp
+    assert_select "div[class='controls']" do
+      assert_select "select[id='user_timestamp_1i'][name='user[timestamp(1i)]']"
+      assert_select "select[id='user_timestamp_2i'][name='user[timestamp(2i)]']"
+      assert_select "select[id='user_timestamp_3i'][name='user[timestamp(3i)]']"
+    end
+  end
+  
+  def test_time_select
+    with_time_select :timestamp
+    assert_select "div[class='controls']" do
+      assert_select "input[type='hidden'][id='user_timestamp_1i'][name='user[timestamp(1i)]']"
+      assert_select "input[type='hidden'][id='user_timestamp_2i'][name='user[timestamp(2i)]']"
+      assert_select "input[type='hidden'][id='user_timestamp_3i'][name='user[timestamp(3i)]']"
+      assert_select "select[id='user_timestamp_4i'][name='user[timestamp(4i)]']"
+      assert_select "select[id='user_timestamp_5i'][name='user[timestamp(5i)]']"
+    end
+  end
+  
+  def test_time_zone_select
+    with_time_zone_select :timestamp
+    assert_select "div[class='controls']" do
+      assert_select "select[id='user_timestamp'][name='user[timestamp]']"
     end
   end
   

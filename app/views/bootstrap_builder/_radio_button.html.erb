@@ -1,18 +1,1 @@
-<%
-  control_group_class  = 'control-group'
-  control_group_class << ' error' if options[:errors]
-%>
-
-<%= content_tag(:div, :class => control_group_class) do %>
-  
-  <%= content_tag(:div, options[:label] || options[:method].to_s.humanize, :class => 'control-label') %>
-  
-  <%= content_tag(:div, :class => 'controls') do %>
-    <% options[:choices].each do |field| %>
-      <%= field %>
-    <% end %>
-    <%= content_tag(:span, options[:errors], :class => 'help-inline') if options[:errors] %>
-    <%= content_tag(:span, options[:help_block], :class => 'help-block') if options[:help_block] %>
-  <% end %>
-  
-<% end %>
+<%= render :partial => "#{BootstrapBuilder.config.template_folder}/templates/choices", :locals => {:options => options} %>

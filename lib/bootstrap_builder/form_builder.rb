@@ -1,15 +1,8 @@
 class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
     
   %w(
-    text_field 
-    password_field 
-    email_field
-    telephone_field
-    number_field
-    text_area 
-    file_field 
-    range_field
-    search_field
+    text_field password_field email_field telephone_field number_field
+    text_area file_field range_field search_field
   ).each do |field_name|
     define_method field_name do |method, *args|
       options = args.detect { |a| a.is_a?(Hash) } || {}
@@ -19,25 +12,21 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
     end
   end
 
-  %w{
-    datetime_select 
-    date_select 
-    time_select 
-    time_zone_select
-  }.each do |field_name|
+  %w(
+    datetime_select date_select time_select time_zone_select
+  ).each do |field_name|
     define_method field_name do |method, options = {}, html_options = {}|
       default_field('select', method, options) do
         super(method, options)
       end
     end
   end
-  
-  def hidden_field(*args)
-    raise 'hey'
-  end
 
+  # Wrapper for the select field
   def select(method, choices, options = {}, html_options = {})
-    render_field('select', method, options) { super(method, choices, options) } 
+    default_field(:select, method, options) do 
+      super(method, choices, options, html_options)
+    end 
   end
   
   # Same as the old check box but it's possible to send an array of values
