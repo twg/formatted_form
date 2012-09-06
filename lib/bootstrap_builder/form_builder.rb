@@ -115,7 +115,9 @@ protected
   
   # Extacts parameters that are used for rendering the field
   def builder_options!(options = {})
-    [:label, :prepend, :append, :help_block, :choices].each_with_object({}) do |attr, hash|
+    [
+      :label, :prepend, :append, :prepend_html, :append_html, :help_block, :choices
+    ].each_with_object({}) do |attr, hash|
       hash[attr] = options.delete(attr)
     end
   end

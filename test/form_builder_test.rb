@@ -39,8 +39,22 @@ class FormBuilderTest < ActionView::TestCase
         assert_select "div[class='input-prepend input-append']" do
           assert_select "span[class='add-on']", '@'
           assert_select "input[type='text'][id='user_twitter'][name='user[twitter]']"
+          assert_select "span[class='add-on']", '!'
         end
-        assert_select "span[class='add-on']", '!'
+      end
+    end
+  end
+  
+  def test_text_field_prepend_append_html
+    with_text_field :twitter, :prepend_html => '<blink>', :append_html => '</blink>'
+    assert_select "div[class='control-group cg-twitter']" do
+      assert_select "label[for='user_twitter']", 'Twitter'
+      assert_select "div[class='controls']" do
+        assert_select "div[class='input-prepend input-append']" do
+          assert_select 'blink' do
+            assert_select "input[type='text'][id='user_twitter'][name='user[twitter]']"
+          end
+        end
       end
     end
   end
