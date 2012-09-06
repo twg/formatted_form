@@ -16,7 +16,7 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
     datetime_select date_select time_select time_zone_select
   ).each do |field_name|
     define_method field_name do |method, options = {}, html_options = {}|
-      default_field('select', method, options) do
+      default_field(field_name, method, options) do
         super(method, options)
       end
     end
