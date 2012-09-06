@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jack Neto", "The Working Group Inc."]
-  s.date = "2012-09-05"
+  s.date = "2012-09-06"
   s.description = ""
   s.email = "jack@twg.ca"
   s.extra_rdoc_files = [
@@ -25,6 +25,8 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/bootstrap_builder.js",
     "app/assets/stylesheets/bootstrap_builder.css",
     "app/views/bootstrap_builder/_check_box.html.erb",
+    "app/views/bootstrap_builder/_date_select.html.erb",
+    "app/views/bootstrap_builder/_datetime_select.html.erb",
     "app/views/bootstrap_builder/_element.html.erb",
     "app/views/bootstrap_builder/_email_field.html.erb",
     "app/views/bootstrap_builder/_file_field.html.erb",
@@ -39,6 +41,8 @@ Gem::Specification.new do |s|
     "app/views/bootstrap_builder/_telephone_field.html.erb",
     "app/views/bootstrap_builder/_text_area.html.erb",
     "app/views/bootstrap_builder/_text_field.html.erb",
+    "app/views/bootstrap_builder/_time_select.html.erb",
+    "app/views/bootstrap_builder/_time_zone_select.html.erb",
     "app/views/bootstrap_builder/templates/_choices.html.erb",
     "app/views/bootstrap_builder/templates/_field.html.erb",
     "bootstrap_builder.gemspec",
