@@ -1,4 +1,4 @@
-class BootstrapBuilder::Configuration
+class FormattedForm::Configuration
   
   # The templates folder 
   attr_accessor :template_folder
@@ -8,7 +8,7 @@ class BootstrapBuilder::Configuration
 
   # Configuration defaults
   def initialize
-    @template_folder = :bootstrap_builder
+    @template_folder    = 'formatted_form'
     @default_form_class = 'form-horizontal'
   end
 end

@@ -5,17 +5,17 @@ class FormBuilderTest < ActionView::TestCase
   
   # -- Form -----------------------------------------------------------------
   def test_form
-    with_bootstrap_form_for(@user, :url => ''){|f|}
+    with_formatted_form_for(@user, :url => ''){|f|}
     assert_select "form[class='form-horizontal']"
   end
   
   def test_form_with_existing_class
-    with_bootstrap_form_for(@user, :url => '', :html => {:class => 'formatted'}){|f|}
+    with_formatted_form_for(@user, :url => '', :html => {:class => 'formatted'}){|f|}
     assert_select "form[class='formatted form-horizontal']"
   end
   
   def test_form_with_override_class
-    with_bootstrap_form_for(@user, :url => '', :html => {:class => 'form-inline'}){|f|}
+    with_formatted_form_for(@user, :url => '', :html => {:class => 'form-inline'}){|f|}
     assert_select "form[class='form-inline']"
   end
   

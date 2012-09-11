@@ -1,4 +1,4 @@
-# Bootstrap Builder
+# Formatted Form
 
 A Rails form builder that generates [Twitter Bootstrap](http://twitter.github.com/bootstrap) markup and helps keep your code clean.
 
@@ -14,13 +14,13 @@ A Rails form builder that generates [Twitter Bootstrap](http://twitter.github.co
 Add gem definition to your Gemfile and run `bundle install`:
     
 ``` ruby
-gem 'bootstrap_builder'
+gem 'formatted_form'
 ```
 
 Require it in your CSS and JS manifest files:
 
 ``` css
-//= require bootstrap_builder
+//= require formatted_form
 ```
 
 ## Configuration
@@ -28,19 +28,19 @@ Require it in your CSS and JS manifest files:
 You can change the default configuration of this gem by adding the following code to you initializers:
 
 ``` ruby
-BootstrapBuilder.configure do |conf|
+FormattedForm.configure do |conf|
   conf.default_form_class = 'form-vertical' # Set the form class. Default is 'form-horizontal'
 end
 ```
 
 ## Usage (with haml)
 
-Use `bootstrap_form_for` when you want to render a form with Bootstrap markup.
+Use `formatted_form_for` when you want to render a form with Bootstrap markup.
 
 ### A sample user form
 
 ``` ruby
-= bootstrap_form_for @user, :url => [:admin, @user] do |f|
+= formatted_form_for [:admin, @user] do |f|
   = f.text_field :name
   = f.number_field :age, nil, :in => 1...100
   = f.email_field :email, :prepend => '@'
@@ -58,7 +58,7 @@ Use `bootstrap_form_for` when you want to render a form with Bootstrap markup.
 Add a class to the form or any field to change the way it is rendered.
 
 ``` ruby
-= bootstrap_form_for @session_user, :url => login_path, :class => 'form-horizontal' do |f|
+= formatted_form_for @session_user, :url => login_path, :class => 'form-horizontal' do |f|
   = f.text_field :email
   = f.password_field :password
   = f.check_box :remember_me, :label => 'Remember me when I come back'
@@ -71,7 +71,7 @@ Hide the label by passing `:label => ''` on any field. (Useful for inline search
 
 
 ``` ruby
-= bootstrap_form_for @search, :url => [:admin, :users], :html => {:method => :get, :class => 'form-search'} do |f|
+= formatted_form_for @search, :url => [:admin, :users], :html => {:method => :get, :class => 'form-search'} do |f|
   = f.text_field :name_equals, :label => 'Find by', :placeholder => 'Name'
   = f.select :role_equals, User::ROLES, :label => ''
   = f.submit 'Search', :class => 'btn-default'
@@ -115,10 +115,10 @@ A group of radio buttons:
 ```
 
 ### Submit
-If you add 'bootstrap_builder' to your Javascript manifest you'll be able to add an extra `:onsubmit_value` option to submit buttons. This will prevent accidental multiple form submits.
+If you add 'formatted_builder' to your Javascript manifest you'll be able to add an extra `data-loading-text` option to submit buttons. This will prevent accidental multiple form submits.
 
 ``` ruby
-= f.submit 'Log In', :onsubmit_value => 'Saving ...'
+= f.submit 'Log In', :data => {:loading_text => 'Saving ...'}
 ```
 
 ### More examples

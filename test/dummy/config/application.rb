@@ -9,7 +9,7 @@ require "sprockets/railtie"
 require "rails/test_unit/railtie"
 
 Bundler.require
-require "bootstrap_builder"
+require "formatted_form"
 
 module Dummy
   class Application < Rails::Application

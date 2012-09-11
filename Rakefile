@@ -10,13 +10,13 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name        = "bootstrap_builder"
-    gem.homepage    = "http://github.com/twg/bootstrap_builder"
+    gem.name        = "formatted_form"
+    gem.homepage    = "http://github.com/twg/formatted_form"
     gem.license     = "MIT"
     gem.summary     = "A Rails form builder that generates Twitter Bootstrap markup and helps keep your code clean"
     gem.description = ''
     gem.email       = "jack@twg.ca"
-    gem.authors     = ["Jack Neto", 'The Working Group Inc.']
+    gem.authors     = ["Jack Neto", 'Oleg Khabarov', 'The Working Group Inc.']
   end
   Jeweler::RubygemsDotOrgTasks.new
 rescue LoadError

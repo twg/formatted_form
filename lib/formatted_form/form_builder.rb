@@ -1,4 +1,4 @@
-class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
+class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
     
   %w(
     text_field password_field email_field telephone_field number_field
@@ -93,7 +93,7 @@ class BootstrapBuilder::FormBuilder < ActionView::Helpers::FormBuilder
   
   # adding builder class for fields_for
   def fields_for(record_name, record_object = nil, options ={}, &block)
-    options[:builder] ||= BootstrapBuilder::FormBuilder
+    options[:builder] ||= FormattedForm::FormBuilder
     super(record_name, record_object, options, &block)
   end
   
@@ -103,7 +103,7 @@ protected
   def default_field(field_name, method, options = {}, &block)
     builder_options = builder_options!(options)
     @template.render(
-      :partial => "#{BootstrapBuilder.config.template_folder}/#{field_name}",
+      :partial => "#{FormattedForm.config.template_folder}/#{field_name}",
       :locals  => { :options => builder_options.merge(
         :builder  => self,
         :method   => method,

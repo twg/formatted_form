@@ -1,9 +1,9 @@
-require 'bootstrap_builder/engine'
-require 'bootstrap_builder/configuration'
-require 'bootstrap_builder/form_builder'
-require 'bootstrap_builder/view_helper'
+require 'formatted_form/engine'
+require 'formatted_form/configuration'
+require 'formatted_form/form_builder'
+require 'formatted_form/view_helper'
 
-module BootstrapBuilder
+module FormattedForm
   class << self
     
     def configure

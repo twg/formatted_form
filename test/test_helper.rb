@@ -24,7 +24,7 @@ class User
 end
 
 class ActionView::TestCase
-  include BootstrapBuilder::ViewHelper
+  include FormattedForm::ViewHelper
   
   setup :load_user
   
@@ -32,14 +32,14 @@ class ActionView::TestCase
     @user = User.new
   end
   
-  def with_bootstrap_form_for(*args, &block)
-    concat bootstrap_form_for(*args, &block)
+  def with_formatted_form_for(*args, &block)
+    concat formatted_form_for(*args, &block)
   end
   
   # Helper method to handle things like `with_text_field`, `with_submit`, etc
   def method_missing(method_name, *args, &block)
     if method_name =~ /^with_(\w+)/
-      with_bootstrap_form_for(@user, :url => ''){ |f| f.send($1, *args, &block) }
+      with_formatted_form_for(@user, :url => ''){ |f| f.send($1, *args, &block) }
     else
       super(method_name, *args, &block)
     end
