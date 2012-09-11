@@ -144,5 +144,5 @@ Use `:help_block` to provide extra description to a fields:
 
 ---
 
-Copyright 2012 Jack Neto, [The Working Group, Inc](http://www.theworkinggroup.ca)
+Copyright 2012 Jack Neto, Oleg Khabarov, [The Working Group, Inc](http://twg.ca)
 
