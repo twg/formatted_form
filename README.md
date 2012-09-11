@@ -1,4 +1,4 @@
-# Formatted Form
+# Formatted Form [![Build Status](https://travis-ci.org/twg/formatted_form.png)](https://travis-ci.org/twg/formatted_form)
 
 A Rails form builder that generates [Twitter Bootstrap](http://twitter.github.com/bootstrap) markup and helps keep your code clean.
 
