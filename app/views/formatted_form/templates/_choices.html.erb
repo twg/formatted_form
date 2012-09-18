@@ -6,7 +6,9 @@
 
 <%= content_tag(:div, :class => control_group_class) do %>
   
-  <%= content_tag(:div, options[:label] || options[:method].to_s.humanize, :class => 'control-label') %>
+  <% unless options[:label] == '' %>
+    <%= content_tag(:div, options[:label] || options[:method].to_s.humanize, :class => 'control-label') %>
+  <% end %>
   
   <%= content_tag(:div, :class => 'controls') do %>
     <% options[:choices].each do |field| %>

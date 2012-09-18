@@ -81,6 +81,11 @@ class FormBuilderTest < ActionView::TestCase
     end
   end
   
+  def test_text_field_with_blank_label
+    with_text_field :name, :label => ''
+    assert_select "label[for='user_name']", 0
+  end
+  
   # -- Radio Button ---------------------------------------------------------
   def test_radio_button
     with_radio_button :role, 'admin'
