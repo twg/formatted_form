@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jack Neto", "Oleg Khabarov", "The Working Group Inc."]
-  s.date = "2012-09-11"
+  s.date = "2012-09-21"
   s.description = ""
   s.email = "jack@twg.ca"
   s.extra_rdoc_files = [
@@ -45,8 +45,8 @@ Gem::Specification.new do |s|
     "app/views/formatted_form/_time_zone_select.html.erb",
     "app/views/formatted_form/templates/_choices.html.erb",
     "app/views/formatted_form/templates/_field.html.erb",
+    "formatted_form.gemspec",
     "lib/formatted_form.rb",
-    "lib/formatted_form/configuration.rb",
     "lib/formatted_form/engine.rb",
     "lib/formatted_form/form_builder.rb",
     "lib/formatted_form/view_helper.rb",
@@ -82,7 +82,6 @@ Gem::Specification.new do |s|
     "test/dummy/public/favicon.ico",
     "test/dummy/script/rails",
     "test/form_builder_test.rb",
-    "test/formatted_form_test.rb",
     "test/test_helper.rb"
   ]
   s.homepage = "http://github.com/twg/formatted_form"
