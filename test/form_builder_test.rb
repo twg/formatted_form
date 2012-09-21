@@ -22,7 +22,6 @@ class FormBuilderTest < ActionView::TestCase
   # -- Text Field -----------------------------------------------------------
   def test_text_field
     with_text_field :name
-    
     assert_select "div[class='control-group cg-name']" do
       assert_select "label[for='user_name']", 'Name'
       assert_select "div[class='controls']" do
@@ -45,20 +44,6 @@ class FormBuilderTest < ActionView::TestCase
     end
   end
   
-  def test_text_field_prepend_append_html
-    with_text_field :twitter, :prepend_html => '<blink>', :append_html => '</blink>'
-    assert_select "div[class='control-group cg-twitter']" do
-      assert_select "label[for='user_twitter']", 'Twitter'
-      assert_select "div[class='controls']" do
-        assert_select "div[class='input-prepend input-append']" do
-          assert_select 'blink' do
-            assert_select "input[type='text'][id='user_twitter'][name='user[twitter]']"
-          end
-        end
-      end
-    end
-  end
-  
   def test_text_field_with_help_block
     with_text_field :name, :help_block => 'Help'
     assert_select "div[class='control-group cg-name']" do
@@ -72,7 +57,6 @@ class FormBuilderTest < ActionView::TestCase
   def test_text_field_with_errors
     assert @user.invalid?
     with_text_field :name
-    
     assert_select "div[class='control-group cg-name error']" do
       assert_select "div[class='controls']" do
         assert_select "input[type='text'][id='user_name'][name='user[name]']"

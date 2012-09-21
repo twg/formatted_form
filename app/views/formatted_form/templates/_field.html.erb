@@ -19,11 +19,9 @@
     
     <% if wrapper_class %>
       <%= content_tag(:div, :class => wrapper_class) do %>
-        <%= options[:prepend_html].html_safe if options[:prepend_html] %>
         <%= content_tag(:span, options[:prepend], :class => 'add-on') if options[:prepend] %>
         <%= options[:content] %>
         <%= content_tag(:span, options[:append], :class => 'add-on') if options[:append] %>
-        <%= options[:append_html].html_safe if options[:append_html] %>
       <% end %>
     
     <% else %>

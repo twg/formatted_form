@@ -42,10 +42,7 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
       label, checked  = label, label  if !checked && is_array
       checked         = label         if !checked
       label           = nil           if !is_array
-      inline = (options[:class].to_s =~ /inline/) ? ' inline' : nil
-      @template.content_tag(:label, :class => "checkbox#{inline}") do
-        super(method, options, checked, unchecked) + label
-      end
+      [super(method, options, checked, unchecked), label, options[:class].to_s =~ /inline/]
     end
     default_field(:check_box, method, options.merge(:choices => choices))
   end
@@ -58,10 +55,7 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
     tag_values = tag_value.is_a?(Array) ? tag_value : [tag_value]
     choices = tag_values.collect do |label, choice|
       label, choice = label, label if !choice
-      inline = (options[:class].to_s =~ /inline/) ? ' inline' : nil
-      @template.content_tag(:label, :class => "radio#{inline}") do
-        super(method, choice, options) + label
-      end
+      [super(method, choice, options), label, options[:class].to_s =~ /inline/]
     end
     default_field(:radio_button, method, options.merge(:choices => choices))
   end
@@ -92,7 +86,7 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
   end
   
   # adding builder class for fields_for
-  def fields_for(record_name, record_object = nil, options ={}, &block)
+  def fields_for(record_name, record_object = nil, options = {}, &block)
     options[:builder] ||= FormattedForm::FormBuilder
     super(record_name, record_object, options, &block)
   end
@@ -105,10 +99,11 @@ protected
     @template.render(
       :partial => "#{FormattedForm.config.template_folder}/#{field_name}",
       :locals  => { :options => builder_options.merge(
-        :builder  => self,
-        :method   => method,
-        :content  => block_given?? @template.capture(&block) : options.delete(:content),
-        :errors   => method ? error_messages_for(method) : nil
+        :builder    => self,
+        :field_name => field_name,
+        :method     => method,
+        :content    => block_given?? @template.capture(&block) : options.delete(:content),
+        :errors     => method ? error_messages_for(method) : nil
       )}
     )
   end
