@@ -97,7 +97,7 @@ protected
   def default_field(field_name, method, options = {}, &block)
     builder_options = builder_options!(options)
     @template.render(
-      :partial => "#{FormattedForm.config.template_folder}/#{field_name}",
+      :partial => "formatted_form/#{field_name}",
       :locals  => { :options => builder_options.merge(
         :builder    => self,
         :field_name => field_name,

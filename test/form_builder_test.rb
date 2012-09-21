@@ -14,11 +14,6 @@ class FormBuilderTest < ActionView::TestCase
     assert_select "form[class='formatted form-horizontal']"
   end
   
-  def test_form_with_override_class
-    with_formatted_form_for(@user, :url => '', :html => {:class => 'form-inline'}){|f|}
-    assert_select "form[class='form-inline']"
-  end
-  
   # -- Text Field -----------------------------------------------------------
   def test_text_field
     with_text_field :name

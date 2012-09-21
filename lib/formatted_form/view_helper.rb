@@ -5,9 +5,7 @@ module FormattedForm::ViewHelper
     options[:builder] = FormattedForm::FormBuilder
     
     options[:html] ||= { }
-    unless options[:html][:class] =~ /form-/
-      options[:html][:class] = "#{options[:html][:class]} #{FormattedForm.config.default_form_class}".strip
-    end
+    options[:html][:class] = "#{options[:html][:class]} form-horizontal".strip
     
     form_for(record, options, &proc)
   end
