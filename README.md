@@ -23,16 +23,6 @@ Require it in your CSS and JS manifest files:
 //= require formatted_form
 ```
 
-## Configuration
-
-You can change the default configuration of this gem by adding the following code to you initializers:
-
-``` ruby
-FormattedForm.configure do |conf|
-  conf.default_form_class = 'form-vertical' # Set the form class. Default is 'form-horizontal'
-end
-```
-
 ## Usage (with haml)
 
 Use `formatted_form_for` when you want to render a form with Bootstrap markup.
