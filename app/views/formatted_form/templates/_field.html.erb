@@ -3,9 +3,9 @@
   control_group_class << " cg-#{options[:method].to_s.dasherize}" if options[:method]
   control_group_class << ' error'                                 if options[:errors]
   
-  if ([:prepend, :prepend_html, :append, :append_html] & options.keys).present?
-    wrapper_class = "#{wrapper_class} input-prepend".strip  if options[:prepend] || options[:prepend_html]
-    wrapper_class = "#{wrapper_class} input-append".strip   if options[:append] || options[:append_html]
+  if ([:prepend, :append] & options.keys).present?
+    wrapper_class = "#{wrapper_class} input-prepend".strip  if options[:prepend]
+    wrapper_class = "#{wrapper_class} input-append".strip   if options[:append]
   end
 %>
 

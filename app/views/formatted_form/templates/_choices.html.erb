@@ -1,7 +1,7 @@
 <%
   control_group_class  = 'control-group'
-  control_group_class << ' error'                                 if options[:errors]
   control_group_class << " cg-#{options[:method].to_s.dasherize}" if options[:method]
+  control_group_class << ' error'                                 if options[:errors]
 %>
 
 <%= content_tag(:div, :class => control_group_class) do %>
