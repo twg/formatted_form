@@ -2,22 +2,30 @@
   control_group_class  = 'control-group'
   control_group_class << ' error'                                 if options[:errors]
   control_group_class << " cg-#{options[:method].to_s.dasherize}" if options[:method]
-  
-  label_class = options[:field_name].to_s.gsub(/(_button$|_)/, '')
 %>
 
 <%= content_tag(:div, :class => control_group_class) do %>
   
   <% unless options[:label] == '' %>
-    
-    <%= content_tag(:div, options[:label] || options[:method].to_s.humanize, :class => 'control-label') %>
+    <%= content_tag(:div, :class => 'control-label') do %>
+      <% if options[:choices].size == 1 %>
+        <%= options[:builder].label(options[:method], options[:label]) %>
+      <% else %>
+        <%= options[:label] || options[:method].to_s.humanize %>
+      <% end %>
+    <% end %>
   <% end %>
   
   <%= content_tag(:div, :class => 'controls') do %>
     <% options[:choices].each do |field, label, inline| %>
-      <% label_class << ' inline' if inline %>
-      <%= content_tag(:label, :class => label_class) do %>
-        <%= field %><%= label %>
+      <% if options[:choices].size == 1 %>
+        <%= field %>
+      <% else%>
+        <% label_class = options[:field_name].to_s.gsub(/(_button$|_)/, '') %>
+        <% label_class << ' inline' if inline %>
+        <%= content_tag(:label, :class => label_class) do %>
+          <%= field %><%= label %>
+        <% end %>
       <% end %>
     <% end %>
     <%= content_tag(:span, options[:errors], :class => 'help-inline') if options[:errors] %>

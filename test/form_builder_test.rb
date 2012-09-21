@@ -74,18 +74,20 @@ class FormBuilderTest < ActionView::TestCase
   def test_radio_button
     with_radio_button :role, 'admin'
     assert_select "div[class='control-group cg-role']" do
-      assert_select "div[class='control-label']", 'Role'
+      assert_select "div[class='control-label']" do
+        assert_select "label[for='user_role']", 'Role'
+      end
       assert_select "div[class='controls']" do
-        assert_select "label[class='radio']", 'admin' do
-          assert_select "input[type='radio'][id='user_role_admin'][name='user[role]'][value='admin']"
-        end
+        assert_select "input[type='radio'][id='user_role_admin'][name='user[role]'][value='admin']"
       end
     end
   end
   
   def test_radio_button_with_custom_label
     with_radio_button :role, 'admin', :label => 'Access'
-    assert_select "div[class='control-label']", 'Access'
+    assert_select "div[class='control-label']" do
+      assert_select "label[for='user_role']", 'Access'
+    end
   end
   
   def test_radio_button_with_choices_array
@@ -111,7 +113,7 @@ class FormBuilderTest < ActionView::TestCase
   end
   
   def test_radio_button_inline
-    with_radio_button :role, 'admin', :class => 'inline'
+    with_radio_button :role, ['admin', 'regular'], :class => 'inline'
     assert_select "label[class='radio inline']", 'admin' do
       assert_select "input[type='radio'][id='user_role_admin'][name='user[role]'][value='admin']"
     end
@@ -121,19 +123,21 @@ class FormBuilderTest < ActionView::TestCase
   def test_check_box
     with_check_box :colors, {}, 'yes', 'no'
     assert_select "div[class='control-group cg-colors']" do
-      assert_select "div[class='control-label']", 'Colors'
+      assert_select "div[class='control-label']" do 
+        assert_select "label[for='user_colors']", 'Colors'
+      end
       assert_select "div[class='controls']" do
-        assert_select "label[class='checkbox']" do
-          assert_select "input[type='hidden'][name='user[colors]'][value='no']"
-          assert_select "input[type='checkbox'][id='user_colors'][name='user[colors]'][value='yes']"
-        end
+        assert_select "input[type='hidden'][name='user[colors]'][value='no']"
+        assert_select "input[type='checkbox'][id='user_colors'][name='user[colors]'][value='yes']"
       end
     end
   end
   
   def test_check_box_custom_label
     with_check_box :colors, :label => 'Kolors'
-    assert_select "div[class='control-label']", 'Kolors'
+    assert_select "div[class='control-label']" do
+      assert_select "label[for='user_colors']", 'Kolors'
+    end
   end
   
   def test_check_box_with_choices_array
@@ -161,9 +165,9 @@ class FormBuilderTest < ActionView::TestCase
   end
   
   def test_check_box_inline
-    with_check_box :colors, :class => 'inline'
+    with_check_box :colors, {:class => 'inline'}, ['red', 'green']
     assert_select "label[class='checkbox inline']" do
-      assert_select "input[type='checkbox'][id='user_colors'][name='user[colors]']"
+      assert_select "input[type='checkbox'][id='user_colors_red'][name='user[colors][]']"
     end
   end
   
