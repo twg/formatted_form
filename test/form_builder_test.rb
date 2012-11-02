@@ -6,12 +6,7 @@ class FormBuilderTest < ActionView::TestCase
   # -- Form -----------------------------------------------------------------
   def test_form
     with_formatted_form_for(@user, :url => ''){|f|}
-    assert_select "form[class='form-horizontal']"
-  end
-  
-  def test_form_with_existing_class
-    with_formatted_form_for(@user, :url => '', :html => {:class => 'formatted'}){|f|}
-    assert_select "form[class='formatted form-horizontal']"
+    assert_select "form"
   end
     
   def test_form_overriding_existing_class
