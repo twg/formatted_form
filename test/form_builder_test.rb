@@ -8,12 +8,32 @@ class FormBuilderTest < ActionView::TestCase
     with_formatted_form_for(@user, :url => ''){|f|}
     assert_select "form"
   end
-    
-  def test_form_overriding_existing_class
-    with_formatted_form_for(@user, :url => '', :html => {:class => 'form-inline'}){|f|}
+  
+  def test_form_with_type_inline
+    with_formatted_form_for(@user, :url => '', :type => :inline){|f|}
     assert_select "form[class='form-inline']"
   end
-
+    
+  def test_form_with_type_horizontal
+    with_formatted_form_for(@user, :url => '', :type => :horizontal){|f|}
+    assert_select "form[class='form-horizontal']"
+  end
+  
+  def test_form_with_type_search
+    with_formatted_form_for(@user, :url => '', :type => :search){|f|}
+    assert_select "form[class='form-search']"
+  end
+  
+  def test_form_overriding_existing_class
+    with_formatted_form_for(@user, :url => '', :type => :inline, :html => {:class => 'custom'}){|f|}
+    assert_select "form[class='custom form-inline']"
+  end
+  
+  def test_form_with_type_derived_from_class
+    with_formatted_form_for(@user, :url => '', :type => :inline, :html => {:class => 'form-horizontal'}){|f|}
+    assert_select "form[class='form-horizontal']"
+  end
+  
   # -- Text Field -----------------------------------------------------------
   def test_text_field
     with_text_field :name
@@ -55,7 +75,7 @@ class FormBuilderTest < ActionView::TestCase
     assert_select "div[class='control-group cg-name error']" do
       assert_select "div[class='controls']" do
         assert_select "input[type='text'][id='user_name'][name='user[name]']"
-        assert_select "span[class='help-inline']", "can&#x27;t be blank"
+        assert_select "span[class='help-inline']", "can't be blank"
       end
     end
   end
