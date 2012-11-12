@@ -80,7 +80,7 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
   #   form.element 'Label do
   #     Content
   #   end
-  def element(label = nil, value = nil, &block)
+  def element(label = false, value = nil, &block)
     options = {:label => label, :content => value }
     default_field(:element, nil, options, &block)
   end

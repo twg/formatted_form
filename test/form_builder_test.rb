@@ -214,6 +214,14 @@ class FormBuilderTest < ActionView::TestCase
     end
   end
   
+  def test_element_with_no_label
+    with_element do
+      'Content'
+    end
+    assert_select "label[class='control-label']", 0
+    assert_select "div[class='controls']", 'Content'
+  end
+  
   # -- Submit ---------------------------------------------------------------
   def test_submit
     with_submit
