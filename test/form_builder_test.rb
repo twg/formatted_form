@@ -88,6 +88,12 @@ class FormBuilderTest < ActionView::TestCase
     assert_select "label[for='user_name']", 0
   end
   
+  def test_text_field_for_inline_form
+    with_formatted_form_for(@user, :url => '', :type => :inline){|f| f.text_field :name }
+    assert_select "div[class='control-group cg-name']", 0
+    assert_select "input[type='text'][id='user_name'][name='user[name]']"
+  end
+  
   # -- Radio Button ---------------------------------------------------------
   def test_radio_button
     with_radio_button :role, 'admin'
@@ -326,6 +332,32 @@ class FormBuilderTest < ActionView::TestCase
     assert_select "div[class='controls']" do
       assert_select "select[id='user_timestamp'][name='user[timestamp]']"
     end
+  end
+  
+  # -- Conditional content tag ----------------------------------------------
+  def test_content_tag_if_true
+    concat content_tag_if(true, :div, 'test', :class => 'test')
+    assert_equal "<div class=\"test\">test</div>", output_buffer
+  end
+  
+  def test_content_tag_if_false
+    concat content_tag_if(false, :div, 'test', :class => 'test')
+    assert_equal 'test', output_buffer
+  end
+  
+  def test_content_tag_if_with_block_if_true
+    concat(content_tag_if(true, :div, :class => 'test'){ 'test' })
+    assert_equal "<div class=\"test\">test</div>", output_buffer
+  end
+  
+  def test_content_tag_if_with_block_if_false
+    concat(content_tag_if(false, :div, :class => 'test'){ 'test' })
+    assert_equal 'test', output_buffer
+  end
+  
+  def test_content_tag_unless
+    concat content_tag_unless(false, :div, 'test', :class => 'test')
+    assert_equal "<div class=\"test\">test</div>", output_buffer
   end
   
 end

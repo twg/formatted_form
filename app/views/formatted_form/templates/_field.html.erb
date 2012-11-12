@@ -1,4 +1,6 @@
 <%
+  inline_form = [:inline, :search].member?(options[:builder].options[:type])
+  
   control_group_class  = 'control-group'
   control_group_class << " cg-#{options[:method].to_s.dasherize}" if options[:method]
   control_group_class << ' error'                                 if options[:errors]
@@ -9,23 +11,18 @@
   end
 %>
 
-<%= content_tag(:div, :class => control_group_class) do %>
+<%= content_tag_unless(inline_form, :div, :class => control_group_class) do %>
   
   <% unless ['', false].include?(options[:label]) %>
     <%= options[:builder].label(options[:method], options[:label], :class => 'control-label') %>
   <% end %>
   
-  <%= content_tag(:div, :class => 'controls') do %>
+  <%= content_tag_unless(inline_form, :div, :class => 'controls') do %>
     
-    <% if wrapper_class %>
-      <%= content_tag(:div, :class => wrapper_class) do %>
-        <%= content_tag(:span, options[:prepend], :class => 'add-on') if options[:prepend] %>
-        <%= options[:content] %>
-        <%= content_tag(:span, options[:append], :class => 'add-on') if options[:append] %>
-      <% end %>
-    
-    <% else %>
+    <%= content_tag_if(wrapper_class, :div, :class => wrapper_class) do %>
+      <%= content_tag(:span, options[:prepend], :class => 'add-on') if options[:prepend] %>
       <%= options[:content] %>
+      <%= content_tag(:span, options[:append], :class => 'add-on') if options[:append] %>
     <% end %>
     
     <%= content_tag(:span, options[:errors], :class => 'help-inline') if options[:errors] %>
