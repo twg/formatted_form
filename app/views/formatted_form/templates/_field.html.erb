@@ -11,7 +11,7 @@
 
 <%= content_tag(:div, :class => control_group_class) do %>
   
-  <% unless options[:label] == '' %>
+  <% unless ['', false].include?(options[:label]) %>
     <%= options[:builder].label(options[:method], options[:label], :class => 'control-label') %>
   <% end %>
   

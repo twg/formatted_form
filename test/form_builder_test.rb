@@ -75,13 +75,16 @@ class FormBuilderTest < ActionView::TestCase
     assert_select "div[class='control-group cg-name error']" do
       assert_select "div[class='controls']" do
         assert_select "input[type='text'][id='user_name'][name='user[name]']"
-        assert_select "span[class='help-inline']", "can't be blank"
+        assert_select "span[class='help-inline']", "can&#x27;t be blank"
       end
     end
   end
   
   def test_text_field_with_blank_label
     with_text_field :name, :label => ''
+    assert_select "label[for='user_name']", 0
+    
+    with_text_field :name, :label => false
     assert_select "label[for='user_name']", 0
   end
   
