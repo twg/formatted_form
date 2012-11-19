@@ -5,9 +5,9 @@
   control_group_class << " cg-#{options[:method].to_s.dasherize}" if options[:method]
   control_group_class << ' error'                                 if options[:errors]
   
-  if ([:prepend, :append] & options.keys).present?
-    wrapper_class = "#{wrapper_class} input-prepend".strip  if options[:prepend]
-    wrapper_class = "#{wrapper_class} input-append".strip   if options[:append]
+  if ([:prepend, :append, :prepend_html, :append_html] & options.keys).present?
+    wrapper_class = "#{wrapper_class} input-prepend".strip  if options[:prepend]  || options[:prepend_html]
+    wrapper_class = "#{wrapper_class} input-append".strip   if options[:append]   || options[:append_html]
   end
 %>
 
@@ -20,9 +20,11 @@
   <%= content_tag_unless(inline_form, :div, :class => 'controls') do %>
     
     <%= content_tag_if(wrapper_class, :div, :class => wrapper_class) do %>
+      <%= options[:prepend_html].html_safe if options[:prepend_html] %>
       <%= content_tag(:span, options[:prepend], :class => 'add-on') if options[:prepend] %>
       <%= options[:content] %>
       <%= content_tag(:span, options[:append], :class => 'add-on') if options[:append] %>
+      <%= options[:append_html].html_safe if options[:append_html] %>
     <% end %>
     
     <%= content_tag(:span, options[:errors], :class => 'help-inline') if options[:errors] %>

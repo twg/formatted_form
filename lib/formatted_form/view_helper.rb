@@ -5,7 +5,7 @@ module FormattedForm::ViewHelper
     options[:builder] ||= FormattedForm::FormBuilder
     
     options[:html] ||= { }
-    options[:html][:class] ||= ''
+    options[:html][:class] ||= 'formatted'
     
     # :type option will set proper form class. Conversely having
     # proper css class will set the type that controls what html

@@ -6,22 +6,22 @@ class FormBuilderTest < ActionView::TestCase
   # -- Form -----------------------------------------------------------------
   def test_form
     with_formatted_form_for(@user, :url => ''){|f|}
-    assert_select "form"
+    assert_select "form[class='formatted']"
   end
   
   def test_form_with_type_inline
     with_formatted_form_for(@user, :url => '', :type => :inline){|f|}
-    assert_select "form[class='form-inline']"
+    assert_select "form[class='formatted form-inline']"
   end
     
   def test_form_with_type_horizontal
     with_formatted_form_for(@user, :url => '', :type => :horizontal){|f|}
-    assert_select "form[class='form-horizontal']"
+    assert_select "form[class='formatted form-horizontal']"
   end
   
   def test_form_with_type_search
     with_formatted_form_for(@user, :url => '', :type => :search){|f|}
-    assert_select "form[class='form-search']"
+    assert_select "form[class='formatted form-search']"
   end
   
   def test_form_overriding_existing_class
@@ -54,6 +54,20 @@ class FormBuilderTest < ActionView::TestCase
           assert_select "span[class='add-on']", '@'
           assert_select "input[type='text'][id='user_twitter'][name='user[twitter]']"
           assert_select "span[class='add-on']", '!'
+        end
+      end
+    end
+  end
+  
+  def test_text_field_prepend_append_html
+    with_text_field :twitter, :prepend_html => '<b>b</b>', :append_html => '<i>i</i>'
+    assert_select "div[class='control-group cg-twitter']" do
+      assert_select "label[for='user_twitter']", 'Twitter'
+      assert_select "div[class='controls']" do
+        assert_select "div[class='input-prepend input-append']" do
+          assert_select "i", 'i'
+          assert_select "input[type='text'][id='user_twitter'][name='user[twitter]']"
+          assert_select "b", 'b'
         end
       end
     end
