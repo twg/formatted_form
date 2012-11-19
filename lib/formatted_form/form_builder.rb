@@ -6,7 +6,7 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
   ).each do |field_name|
     define_method field_name do |method, *args|
       options = args.detect { |a| a.is_a?(Hash) } || {}
-      default_field(field_name, method, options) do 
+      default_field(field_name, method, options) do
         super(method, *args)
       end
     end
@@ -95,6 +95,7 @@ protected
   
   # Main rendering method
   def default_field(field_name, method, options = {}, &block)
+    return yield if options[:builder] == false
     builder_options = builder_options!(options)
     @template.render(
       :partial => "formatted_form/#{field_name}",

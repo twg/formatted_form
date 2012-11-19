@@ -108,6 +108,12 @@ class FormBuilderTest < ActionView::TestCase
     assert_select "input[type='text'][id='user_name'][name='user[name]']"
   end
   
+  def test_text_field_with_no_builder
+    with_text_field :name, :builder => false
+    assert_select "div[class='control-group cg-name']", 0
+    assert_select "label[for='user_name']", 0
+  end
+  
   # -- Radio Button ---------------------------------------------------------
   def test_radio_button
     with_radio_button :role, 'admin'
