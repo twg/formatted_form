@@ -1,12 +1,12 @@
 // Reset the state of the submit button
 $(document).ready(function() {
   
-  $('input[type=submit][data-loading-text]').each(function(i, button){
-    $(button).button('reset');
+  $('body').on('submit', 'form', function(event){
+    $('input[type=submit][data-loading-text]', event.target).button('loading');
   });
   
-  $('form').on('submit', function(event){
-    $('input[type=submit][data-loading-text]', event.target).button('loading');
+  $('body').on('reset', 'form', function(event){
+    $('input[type=submit][data-loading-text]', event.target).button('reset');
   });
   
 });
