@@ -112,6 +112,7 @@ class FormBuilderTest < ActionView::TestCase
     with_text_field :name, :builder => false
     assert_select "div[class='control-group cg-name']", 0
     assert_select "label[for='user_name']", 0
+    assert_select "input[builder='false']", 0
   end
   
   # -- Radio Button ---------------------------------------------------------

@@ -95,7 +95,7 @@ protected
   
   # Main rendering method
   def default_field(field_name, method, options = {}, &block)
-    return yield if options[:builder] == false
+    return yield if options.delete(:builder) == false
     builder_options = builder_options!(options)
     @template.render(
       :partial => "formatted_form/#{field_name}",
