@@ -35,6 +35,7 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
   #   form.check_box :color, {}, ['red', 'blue']
   #   form.check_box :color, {}, [['Red', 'red'], ['Blue', 'blue']]
   def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
+    return super(method, options, checked_value, unchecked_value) if options.delete(:builder) == false
     is_array = checked_value.is_a?(Array)
     options.merge!(:multiple => true) if is_array
     checked_value = is_array ? checked_value : [[checked_value, checked_value, unchecked_value]]
@@ -52,6 +53,7 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
   #   form.radio_button :role, ['admin', 'regular']
   #   form.radio_button :role, [['Admin', 1], ['Regular', 0]]
   def radio_button(method, tag_value, options = {})
+    return super(method, tag_value, options) if options.delete(:builder) == false
     tag_values = tag_value.is_a?(Array) ? tag_value : [tag_value]
     choices = tag_values.collect do |label, choice|
       label, choice = label, label if !choice
@@ -95,7 +97,7 @@ protected
   
   # Main rendering method
   def default_field(field_name, method, options = {}, &block)
-    return yield if options.delete(:builder) == false
+    return yield if options.delete(:builder) == false && block_given?
     builder_options = builder_options!(options)
     @template.render(
       :partial => "formatted_form/#{field_name}",

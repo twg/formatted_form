@@ -216,6 +216,13 @@ class FormBuilderTest < ActionView::TestCase
     end
   end
   
+  def test_check_box_with_no_builder
+    with_check_box :colors, :builder => false
+    assert_select "div[class='control-group cg-colors']", 0
+    assert_select "label[for='user_colors']", 0
+    assert_select "input[builder='false']", 0
+  end
+  
   # -- Element --------------------------------------------------------------
   def test_element
     with_element 'Label', 'Content'
