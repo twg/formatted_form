@@ -56,7 +56,7 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
     return super(method, tag_value, options) if options.delete(:builder) == false
     tag_values = tag_value.is_a?(Array) ? tag_value : [tag_value]
     choices = tag_values.collect do |label, choice|
-      label, choice = label, label if !choice
+      label, choice = label, label if choice.nil?
       [super(method, choice, options), label, options[:class].to_s =~ /inline/]
     end
     default_field(:radio_button, method, options.merge(:choices => choices))
