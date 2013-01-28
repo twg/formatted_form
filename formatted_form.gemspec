@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "formatted_form"
-  s.version = "2.0.4"
+  s.version = "2.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jack Neto", "Oleg Khabarov", "The Working Group Inc."]
-  s.date = "2013-01-15"
+  s.date = "2013-01-28"
   s.description = ""
   s.email = "jack@twg.ca"
   s.extra_rdoc_files = [
@@ -44,7 +44,12 @@ Gem::Specification.new do |s|
     "app/views/formatted_form/_time_select.html.erb",
     "app/views/formatted_form/_time_zone_select.html.erb",
     "app/views/formatted_form/templates/_choices.html.erb",
+    "app/views/formatted_form/templates/_choices_block.html.erb",
+    "app/views/formatted_form/templates/_choices_inline.html.erb",
     "app/views/formatted_form/templates/_field.html.erb",
+    "app/views/formatted_form/templates/_field_block.html.erb",
+    "app/views/formatted_form/templates/_field_inline.html.erb",
+    "app/views/formatted_form/templates/_label.html.erb",
     "formatted_form.gemspec",
     "lib/formatted_form.rb",
     "lib/formatted_form/engine.rb",
@@ -54,10 +59,12 @@ Gem::Specification.new do |s|
     "test/dummy/Rakefile",
     "test/dummy/app/assets/javascripts/application.js",
     "test/dummy/app/assets/stylesheets/application.css",
+    "test/dummy/app/assets/stylesheets/bootstrap.css",
     "test/dummy/app/controllers/application_controller.rb",
     "test/dummy/app/helpers/application_helper.rb",
     "test/dummy/app/mailers/.gitkeep",
     "test/dummy/app/models/.gitkeep",
+    "test/dummy/app/views/application/test.html.erb",
     "test/dummy/app/views/layouts/application.html.erb",
     "test/dummy/config.ru",
     "test/dummy/config/application.rb",
