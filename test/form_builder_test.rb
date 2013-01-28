@@ -37,7 +37,7 @@ class FormBuilderTest < ActionView::TestCase
   # -- Text Field -----------------------------------------------------------
   def test_text_field
     with_text_field :name
-    assert_select "div[class='control-group cg-name']" do
+    assert_select "div[class='control-group']" do
       assert_select "label[for='user_name']", 'Name'
       assert_select "div[class='controls']" do
         assert_select "input[type='text'][id='user_name'][name='user[name]']"
@@ -47,7 +47,7 @@ class FormBuilderTest < ActionView::TestCase
   
   def test_text_field_prepend_append
     with_text_field :twitter, :prepend => '@', :append => '!'
-    assert_select "div[class='control-group cg-twitter']" do
+    assert_select "div[class='control-group']" do
       assert_select "label[for='user_twitter']", 'Twitter'
       assert_select "div[class='controls']" do
         assert_select "div[class='input-prepend input-append']" do
@@ -61,7 +61,7 @@ class FormBuilderTest < ActionView::TestCase
   
   def test_text_field_prepend_append_html
     with_text_field :twitter, :prepend_html => '<b>b</b>', :append_html => '<i>i</i>'
-    assert_select "div[class='control-group cg-twitter']" do
+    assert_select "div[class='control-group']" do
       assert_select "label[for='user_twitter']", 'Twitter'
       assert_select "div[class='controls']" do
         assert_select "div[class='input-prepend input-append']" do
@@ -75,7 +75,7 @@ class FormBuilderTest < ActionView::TestCase
   
   def test_text_field_with_help_block
     with_text_field :name, :help_block => 'Help'
-    assert_select "div[class='control-group cg-name']" do
+    assert_select "div[class='control-group']" do
       assert_select "div[class='controls']" do
         assert_select "input[type='text'][id='user_name'][name='user[name]']"
         assert_select "span[class='help-block']", 'Help'
@@ -83,13 +83,23 @@ class FormBuilderTest < ActionView::TestCase
     end
   end
   
+  def test_text_field_with_help_inline
+    with_text_field :name, :help_inline => 'Help'
+    assert_select "div[class='control-group']" do
+      assert_select "div[class='controls']" do
+        assert_select "input[type='text'][id='user_name'][name='user[name]']"
+        assert_select "span[class='help-inline']", 'Help'
+      end
+    end
+  end
+  
   def test_text_field_with_errors
     assert @user.invalid?
     with_text_field :name
-    assert_select "div[class='control-group cg-name error']" do
+    assert_select "div[class='control-group error']" do
       assert_select "div[class='controls']" do
         assert_select "input[type='text'][id='user_name'][name='user[name]']"
-        assert_select "span[class='help-inline']", "can&#x27;t be blank"
+        assert_select "span[class='help-block']", "can&#x27;t be blank"
       end
     end
   end
@@ -104,47 +114,36 @@ class FormBuilderTest < ActionView::TestCase
   
   def test_text_field_for_inline_form
     with_formatted_form_for(@user, :url => '', :type => :inline){|f| f.text_field :name }
-    assert_select "div[class='control-group cg-name']", 0
+    assert_select "div[class='control-group']", 0
     assert_select "input[type='text'][id='user_name'][name='user[name]']"
   end
   
   def test_text_field_with_no_builder
     with_text_field :name, :builder => false
-    assert_select "div[class='control-group cg-name']", 0
+    assert_select "div[class='control-group']", 0
     assert_select "label[for='user_name']", 0
     assert_select "input[builder='false']", 0
   end
   
   # -- Radio Button ---------------------------------------------------------
   def test_radio_button
-    with_radio_button :role, 'admin'
-    assert_select "div[class='control-group cg-role']" do
-      assert_select "div[class='control-label']" do
-        assert_select "label[for='user_role']", 'Role'
-      end
+    with_radio_button :role, ['admin', 'regular']
+    assert_select "div[class='control-group']" do
+      assert_select "div[class='control-label']", 'Role'
       assert_select "div[class='controls']" do
-        assert_select "input[type='radio'][id='user_role_admin'][name='user[role]'][value='admin']"
+        assert_select "label" do
+          assert_select "input[type='radio'][id='user_role_admin'][name='user[role]'][value='admin']"
+        end
+        assert_select "label" do
+          assert_select "input[type='radio'][id='user_role_regular'][name='user[role]'][value='regular']"
+        end
       end
     end
   end
   
   def test_radio_button_with_custom_label
-    with_radio_button :role, 'admin', :label => 'Access'
-    assert_select "div[class='control-label']" do
-      assert_select "label[for='user_role']", 'Access'
-    end
-  end
-  
-  def test_radio_button_with_choices_array
-    with_radio_button :role, ['admin', 'regular']
-    assert_select "div[class='controls']" do
-      assert_select "label[class='radio']", 'admin' do
-        assert_select "input[type='radio'][id='user_role_admin'][name='user[role]'][value='admin']"
-      end
-      assert_select "label[class='radio']", 'regular' do
-        assert_select "input[type='radio'][id='user_role_regular'][name='user[role]'][value='regular']"
-      end
-    end
+    with_radio_button :role, ['admin', 'regular'], :label => 'Access'
+    assert_select "div[class='control-label']", 'Access'
   end
   
   def test_radio_button_with_choices_tuples
@@ -158,7 +157,7 @@ class FormBuilderTest < ActionView::TestCase
   end
   
   def test_radio_button_inline
-    with_radio_button :role, ['admin', 'regular'], :class => 'inline'
+    with_radio_button :role, ['admin', 'regular'], :inline => true
     assert_select "label[class='radio inline']", 'admin' do
       assert_select "input[type='radio'][id='user_role_admin'][name='user[role]'][value='admin']"
     end
@@ -167,22 +166,19 @@ class FormBuilderTest < ActionView::TestCase
   # -- Check Boxes ----------------------------------------------------------
   def test_check_box
     with_check_box :colors, {}, 'yes', 'no'
-    assert_select "div[class='control-group cg-colors']" do
-      assert_select "div[class='control-label']" do 
-        assert_select "label[for='user_colors']", 'Colors'
-      end
+    assert_select "div[class='control-group']" do
       assert_select "div[class='controls']" do
         assert_select "input[type='hidden'][name='user[colors]'][value='no']"
-        assert_select "input[type='checkbox'][id='user_colors'][name='user[colors]'][value='yes']"
+        assert_select "label[class='checkbox']" do
+          assert_select "input[type='checkbox'][id='user_colors'][name='user[colors]'][value='yes']"
+        end
       end
     end
   end
   
   def test_check_box_custom_label
     with_check_box :colors, :label => 'Kolors'
-    assert_select "div[class='control-label']" do
-      assert_select "label[for='user_colors']", 'Kolors'
-    end
+    assert_select "label", 'Kolors'
   end
   
   def test_check_box_with_choices_array
@@ -210,7 +206,7 @@ class FormBuilderTest < ActionView::TestCase
   end
   
   def test_check_box_inline
-    with_check_box :colors, {:class => 'inline'}, ['red', 'green']
+    with_check_box :colors, {:inline => true}, ['red', 'green']
     assert_select "label[class='checkbox inline']" do
       assert_select "input[type='checkbox'][id='user_colors_red'][name='user[colors][]']"
     end
@@ -253,17 +249,12 @@ class FormBuilderTest < ActionView::TestCase
   # -- Submit ---------------------------------------------------------------
   def test_submit
     with_submit
-    assert_select "input[name=commit][value='Create User'][class='btn btn-primary']"
+    assert_select "input[name=commit][value='Create User']"
   end
   
   def test_submit_with_label
     with_submit 'Create'
     assert_select "input[name='commit'][value='Create']"
-  end
-  
-  def test_submit_with_css_class
-    with_submit :class => 'btn-danger'
-    assert_select "input[name=commit][class='btn-danger btn']"
   end
   
   # -- Others ---------------------------------------------------------------
@@ -368,32 +359,6 @@ class FormBuilderTest < ActionView::TestCase
     assert_select "div[class='controls']" do
       assert_select "select[id='user_timestamp'][name='user[timestamp]']"
     end
-  end
-  
-  # -- Conditional content tag ----------------------------------------------
-  def test_content_tag_if_true
-    concat content_tag_if(true, :div, 'test', :class => 'test')
-    assert_equal "<div class=\"test\">test</div>", output_buffer
-  end
-  
-  def test_content_tag_if_false
-    concat content_tag_if(false, :div, 'test', :class => 'test')
-    assert_equal 'test', output_buffer
-  end
-  
-  def test_content_tag_if_with_block_if_true
-    concat(content_tag_if(true, :div, :class => 'test'){ 'test' })
-    assert_equal "<div class=\"test\">test</div>", output_buffer
-  end
-  
-  def test_content_tag_if_with_block_if_false
-    concat(content_tag_if(false, :div, :class => 'test'){ 'test' })
-    assert_equal 'test', output_buffer
-  end
-  
-  def test_content_tag_unless
-    concat content_tag_unless(false, :div, 'test', :class => 'test')
-    assert_equal "<div class=\"test\">test</div>", output_buffer
   end
   
 end

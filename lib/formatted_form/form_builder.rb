@@ -40,10 +40,13 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
     options.merge!(:multiple => true) if is_array
     checked_value = is_array ? checked_value : [[checked_value, checked_value, unchecked_value]]
     choices = checked_value.collect do |label, checked, unchecked|
-      label, checked  = label, label  if !checked && is_array
-      checked         = label         if !checked
-      label           = nil           if !is_array
-      [super(method, options, checked, unchecked), label, options[:class].to_s =~ /inline/]
+      label, checked  = label, label          if !checked && is_array
+      checked         = label                 if !checked
+      label           = method.to_s.humanize  if !is_array
+      
+      match = super(method, options, checked, unchecked).match(/(<input .*?\/>)?(<input .*?\/>)/)
+      hidden, input = match[1], match[2]
+      [hidden.to_s.html_safe, input.to_s.html_safe, label]
     end
     default_field(:check_box, method, options.merge(:choices => choices))
   end
@@ -57,7 +60,7 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
     tag_values = tag_value.is_a?(Array) ? tag_value : [tag_value]
     choices = tag_values.collect do |label, choice|
       label, choice = label, label if choice.nil?
-      [super(method, choice, options), label, options[:class].to_s =~ /inline/]
+      [nil, super(method, choice, options), label]
     end
     default_field(:radio_button, method, options.merge(:choices => choices))
   end
@@ -65,13 +68,6 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
   # Creates submit button element with appropriate bootstrap classes.
   #   form.submit, :class => 'btn-danger'
   def submit(value = nil, options = {}, &block)
-    value, options = nil, value if value.is_a?(Hash)
-    value ||= submit_default_value
-    
-    # Add specific bootstrap class
-    options[:class] = "#{options[:class]} btn".strip
-    options[:class] = "#{options[:class]} btn-primary" unless options[:class] =~ /btn-/
-    
     default_field(:submit, nil, options) do
       super(value, options)
     end
@@ -82,7 +78,7 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
   #   form.element 'Label do
   #     Content
   #   end
-  def element(label = false, value = nil, &block)
+  def element(label = false, value = nil, options = {}, &block)
     options = {:label => label, :content => value }
     default_field(:element, nil, options, &block)
   end
@@ -114,7 +110,7 @@ protected
   # Extacts parameters that are used for rendering the field
   def builder_options!(options = {})
     [
-      :label, :prepend, :append, :prepend_html, :append_html, :help_block, :choices
+      :label, :prepend, :append, :prepend_html, :append_html, :help_block, :help_inline, :choices, :inline
     ].each_with_object({}) do |attr, hash|
       hash[attr] = options.delete(attr)
     end
