@@ -10,7 +10,7 @@
 
   <% if options[:choices].size > 1 %>
     <%= content_tag(:div, :class => 'control-label') do %>
-      <%= options[:label] || options[:method].to_s.humanize %>
+      <%= options.delete(:label) || options[:method].to_s.humanize %>
     <% end %>
   <% end %>
 
