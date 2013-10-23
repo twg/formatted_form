@@ -2,7 +2,7 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
     
   %w(
     text_field password_field email_field telephone_field number_field
-    text_area file_field range_field search_field
+    text_area file_field range_field search_field url_field
   ).each do |field_name|
     define_method field_name do |method, *args|
       options = args.detect { |a| a.is_a?(Hash) } || {}
