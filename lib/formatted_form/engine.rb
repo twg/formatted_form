@@ -1,4 +1,5 @@
 require 'rails'
+require 'action_view'
 require 'formatted_form'
 
 module FormattedForm
