@@ -37,6 +37,7 @@ Use `formatted_form_for` when you want to render a form with Bootstrap markup.
   = f.phone_field :phone
   = f.password_field :password
   = f.password_field :password_confirmation
+  = f.url_field :homepage
   = f.select :role, User::ROLES
   = f.time_zone_select :time_zone
   = f.check_box :reminder, :label => 'Send Daily Reminder?'
