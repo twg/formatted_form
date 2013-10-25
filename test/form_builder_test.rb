@@ -99,7 +99,7 @@ class FormBuilderTest < ActionView::TestCase
     assert_select "div[class='control-group error']" do
       assert_select "div[class='controls']" do
         assert_select "input[type='text'][id='user_name'][name='user[name]']"
-        assert_select "span[class='help-block']", "can&#x27;t be blank"
+        assert_select "span[class='help-block']", "can&#39;t be blank"
       end
     end
   end

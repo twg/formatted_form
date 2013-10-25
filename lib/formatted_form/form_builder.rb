@@ -13,9 +13,19 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
   end
 
   %w(
-    datetime_select date_select time_select time_zone_select
+    datetime_select date_select time_select
   ).each do |field_name|
     define_method field_name do |method, options = {}, html_options = {}|
+      default_field(field_name, method, options) do
+        super(method, options)
+      end
+    end
+  end
+  
+  %w(
+    time_zone_select
+  ).each do |field_name|
+    define_method field_name do |method, options = nil, html_options = {}|
       default_field(field_name, method, options) do
         super(method, options)
       end
@@ -92,7 +102,8 @@ class FormattedForm::FormBuilder < ActionView::Helpers::FormBuilder
 protected
   
   # Main rendering method
-  def default_field(field_name, method, options = {}, &block)
+  def default_field(field_name, method, options = nil, &block)
+    options ||= {}
     return yield if options.delete(:builder) == false && block_given?
     builder_options = builder_options!(options)
     @template.render(
