@@ -103,6 +103,17 @@ class FormBuilderTest < ActionView::TestCase
       end
     end
   end
+
+  def test_text_field_with_html_errors
+    assert @user.invalid?
+    with_formatted_form_for(@user, :url => '', :errors_html_safe => {notes: true}) {|f| f.text_field :notes}
+    assert_select "div[class='control-group error']" do
+      assert_select "div[class='controls']" do
+        assert_select "input[type='text'][id='user_notes'][name='user[notes]']"
+        assert_select "span[class='help-block']", {:text => "this has html", :html => "this has <b>html</b>"}
+      end
+    end
+  end
   
   def test_text_field_with_blank_label
     with_text_field :name, :label => ''

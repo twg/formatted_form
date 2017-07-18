@@ -1,7 +1,7 @@
 <%
   cg_class = 'control-group'
   cg_class << ' error' if options[:errors].present?
-  
+
   label_class = options[:field_name].to_s.gsub(/(_button$|_)/, '')
   label_class << ' inline' if options[:inline]
 %>
@@ -21,8 +21,9 @@
         <%= field %><%= options[:label] || label %>
       <% end %>
     <% end %>
-    
-    <%= content_tag(:span, options[:errors], :class => 'help-block') if options[:errors].present? %>
+
+    <% html_safe_error = options[:builder].options.fetch(:errors_html_safe, {})[options[:method]] %>
+    <%= content_tag(:span, html_safe_error ? options[:errors].html_safe : options[:errors], :class => 'help-block') if options[:errors].present? %>
 
     <%= content_tag(:span, options[:help_block], :class => 'help-block')   if options[:help_block].present? %>
     <%= content_tag(:span, options[:help_inline], :class => 'help-inline') if options[:help_inline].present? %>
